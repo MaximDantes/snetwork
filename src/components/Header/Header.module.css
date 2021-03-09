@@ -1,0 +1,43 @@
+header {
+  grid-area: header;
+  background: #101e46;
+  color: #f5f5f5;
+  display: flex !important;
+  justify-content: space-between;
+}
+
+.title {
+  flex-basis: 50%;
+  padding: 0 20px;
+  line-height: 60px;
+  text-align: right;
+}
+
+.logo {
+  flex-basis: 50%;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(3600deg);
+  }
+}
+
+.logo img {
+  height: 100%;
+  animation: rotate 5s infinite;
+}
+
+@media screen and (max-device-width: 767px) {
+  .title {
+    flex-basis: 70%;
+    padding: 0 10px;
+    font-size: 20px;
+  }
+  .logo {
+    flex-basis: 30%;
+  }
+}

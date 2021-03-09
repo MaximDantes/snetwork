@@ -1,0 +1,18 @@
+.post {
+    display: flex;
+    margin: 10px 0;
+    background: #f1f1f1;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.post img {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+.post p {
+    margin-left: 20px;
+    font-size: 20px;
+}

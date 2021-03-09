@@ -1,25 +1,40 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header/Header';
+import Nav from './components/Nav/Nav';
+import Profile from './components/Profile/Profile';
+import Dialogs from './components/Dialogs/Dialogs';
+import News from './components/News/News';
+import Music from './components/Music/Music';
+import Settings from './components/Settings/Settings';
+import Firends from './components/Friends/Friends';
+import { Route } from 'react-router-dom';
 
-function App() {
+const App = (props) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='wrapper'>
+      <Header />
+      <Nav />
+      <main>
+        <Route path='/profile' render={() =>
+          <Profile
+            state={props.state.profile}
+            dispatch={props.dispatch}
+          />}
+        />
+        <Route path='/dialogs' render={() =>
+          <Dialogs
+            state={props.state.dialogs}
+            dispatch={props.dispatch}
+          />}
+        />
+        <Route path='/news' render={() => <News />} />
+        <Route path='/friends' render={() => <Firends state={props.state.firends} />} />
+        <Route path='/music' render={() => <Music />} />
+        <Route path='/settings' render={() => <Settings />} />
+      </main>
+
     </div>
   );
-}
+};
 
 export default App;
