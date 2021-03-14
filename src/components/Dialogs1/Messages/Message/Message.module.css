@@ -1,0 +1,27 @@
+.message {
+    display: flex;
+}
+
+.message p {
+    font-size: 20px;
+    margin: 10px;
+}
+
+.sended {
+    flex-direction: row-reverse;
+}
+
+.sended p {
+    width: 70%;
+    text-align: right;
+}
+
+.received {
+    text-align: left;
+    flex-direction: row;
+}
+
+.received p {
+    width: 70%;
+    text-align: left;
+}

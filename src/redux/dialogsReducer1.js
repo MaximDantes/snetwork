@@ -48,47 +48,52 @@ const initialState = {
 
 export const dialogsReducer = (state = initialState, action) => {
 
-    const sendMessage = () => {
-        const stateCopy = { ...state };
-        stateCopy.messagesData = [...state.messagesData];
+    // const sendMessage = () => {
+    //     const stateCopy = { ...state };
+    //     stateCopy.messagesData = [...state.messagesData];
 
-        stateCopy.messagesData.push({
-            id: 2,
-            sender: 1,
-            receiver: 0,
-            text: stateCopy.newMessageText
-        });
+    //     stateCopy.messagesData.push({
+    //         id: 2,
+    //         sender: 1,
+    //         receiver: 0,
+    //         text: stateCopy.newMessageText
+    //     });
 
-        stateCopy.newMessageText = '';
+    //     stateCopy.newMessageText = '';
 
-        return stateCopy;
-    };
-    const writeNewMessage = text => {
-        const stateCopy = { ...state };
-        stateCopy.newMessageText = text;
+    //     return stateCopy;
+    // };
+    // const writeNewMessage = text => {
+    //     const stateCopy = { ...state };
+    //     stateCopy.newMessageText = text;
 
-        return stateCopy;
-    };
+    //     return stateCopy;
+    // };
 
     switch (action.type) {
-        case actionTypes.sendMessage:
-            const text = state.messagesData;
-            return {
-                ...state,
-                messagesData: [...state.messagesData, {
-                    id: 2,
-                    sender: 1,
-                    receiver: 0,
-                    text: text
-                }],
-                newMessageText: ''
-            };
+        case actionTypes.sendMessage: {
+            let stateCopy = { ...state };
+            stateCopy.messagesData = [...state.messagesData];
 
-        case actionTypes.writeNewMessage:
-            return {
-                ...state,
-                newMessageText: action.text
-            };
+            stateCopy.messagesData.push({
+                id: 2,
+                sender: 1,
+                receiver: 0,
+                text: stateCopy.newMessageText
+            });
+
+            stateCopy.newMessageText = '';
+
+            return stateCopy;
+        }
+
+
+        case actionTypes.writeNewMessage: {
+            let stateCopy = { ...state };
+            stateCopy.newMessageText = action.text;
+
+            return stateCopy;
+        }
 
         default:
             return state;

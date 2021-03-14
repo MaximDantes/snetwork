@@ -1,0 +1,10 @@
+.messages {
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+}
+
+.scroller {
+    overflow-y: scroll;
+}

@@ -1,27 +1,24 @@
-import React from 'react';
+import { connect } from 'react-redux';
 import { sendMessageActionCreator, writeNewMessageActionCreator } from '../../../../redux/dialogsReducer';
 import NewMessage from './NewMessage';
 
-const NewMessageContainer = (props) => {
-
-    const sendMessage = () => {
-        if (props.state) {
-            props.dispatch(sendMessageActionCreator());
-        }
-    };
-
-    const writeNewMessage = (e) => {
-        props.dispatch(writeNewMessageActionCreator(e.target.value));
+const mapStateToProps = (state) => {
+    return {
+        newMessageText: state.profile.newMessageText,
     }
-
-
-    return (
-        <NewMessage
-            newMessageText={props.state.newMessageText}
-            sendMessage={sendMessage}
-            writeNewMessage={writeNewMessage}
-        />
-    );
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        sendMessage: () => {
+            dispatch(sendMessageActionCreator());
+        },
+        writeNewMessage: (e) => {
+            dispatch(writeNewMessageActionCreator(e.target.value));
+        },
+    }
+}
+
+const NewMessageContainer = connect(mapStateToProps, mapDispatchToProps)(NewMessage);
 
 export default NewMessageContainer;
