@@ -1,34 +1,29 @@
 import { connect } from "react-redux";
-import { followActionCreator, setCurrentPageActionCreator, setTotalUsersCountActionCreator, setUsersActonCreator, unfollowActionCreator, toggleFetchingActionCreator } from "../../redux/usersReducer";
-import axios from 'axios';
 import { Component } from 'react';
+import {
+    follow, setCurrentPage, setTotalUsersCount,
+    setUsers, unfollow, toggleFetching,
+    writeFindText, toggleFollowingProgress, getUsers,
+    find,
+} from "../../redux/usersReducer";
 import Users from './Users';
-import loader from './../../assets/images/loader.svg';
-
+import Preloader from "../common/Preloader/Preloader";
 
 class UsersContainer extends Component {
 
     componentDidMount = () => {
-        this.props.toggleFetching(true);
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${this.props.currentPage}`)
-            .then(response => {
-                this.props.setUsers(response.data.items);
-                this.props.setTotalUsersCount(response.data.totalCount);
-                this.props.toggleFetching(false);
-            });
+        this.props.getUsers(this.props.pageSize, this.props.currentPage);
     }
 
     changePage = (pageNumber) => {
-        if (pageNumber >= 1 && pageNumber <= this.pagesCount) {
-            this.props.toggleFetching(true);
+        if (pageNumber >= 1 && pageNumber <= this.pagesCount) {            
+            this.props.getUsers(this.props.pageSize, pageNumber);
+        }
+    }
 
-            this.props.setCurrentPage(pageNumber);
-
-            axios.get(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${pageNumber}`)
-                .then(response => {
-                    this.props.setUsers(response.data.items);
-                    this.props.toggleFetching(false);
-                });
+    find = () => {
+        if (this.props.findText) {
+            this.props.find(this.props.pageSize, this.props.findText);
         }
     }
 
@@ -38,7 +33,7 @@ class UsersContainer extends Component {
             <div> {
                 this.props.isFetching
                     ?
-                    <img src={loader} alt="loader" />
+                    <Preloader />
                     :
                     <Users
                         usersData={this.props.usersData}
@@ -46,9 +41,14 @@ class UsersContainer extends Component {
                         pageSize={this.props.pageSize}
                         pagesCount={this.pagesCount}
                         currentPage={this.props.currentPage}
+                        followingInProgress={this.props.followingInProgress}
+                        findText={this.props.findText}
                         unfollow={this.props.unfollow}
                         follow={this.props.follow}
                         changePage={this.changePage}
+                        writeFindText={this.props.writeFindText}
+                        find={this.find}
+                        toggleFollowingProgress={this.props.toggleFollowingProgress}
                     />
             }
             </div>
@@ -62,28 +62,14 @@ const mapStateToProps = (state) => {
         pageSize: state.users.pageSize,
         totalUsersCount: state.users.totalUsersCount,
         currentPage: state.users.currentPage,
+        findText: state.users.findText,
         isFetching: state.users.isFetching,
+        followingInProgress: state.users.followingInProgress,
     }
 };
 
-const mapDiapstchToProps = (dispatch) => ({
-    follow: (userId) => {
-        dispatch(followActionCreator(userId));
-    },
-    unfollow: (userId) => {
-        dispatch(unfollowActionCreator(userId));
-    },
-    setUsers: (users) => {
-        dispatch(setUsersActonCreator(users));
-    },
-    setCurrentPage: (pageNumber) => {
-        dispatch(setCurrentPageActionCreator(pageNumber));
-    },
-    setTotalUsersCount: (count) => {
-        dispatch(setTotalUsersCountActionCreator(count));
-    },
-    toggleFetching: (isFetching) => {
-        dispatch(toggleFetchingActionCreator(isFetching));
-    }
-});
-export default connect(mapStateToProps, mapDiapstchToProps)(UsersContainer);
+export default connect(mapStateToProps, {
+    follow, unfollow, setUsers, setCurrentPage,
+    setTotalUsersCount, toggleFetching, writeFindText,
+    toggleFollowingProgress, getUsers, find,
+})(UsersContainer);

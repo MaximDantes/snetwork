@@ -1,6 +1,8 @@
 const actionTypes = {
     addPost: 'ADD_POST',
     writeNewPost: 'WRITE_NEW_POST',
+    setProfile: 'SET_PROFILE',
+    toggleFetching: 'TOGGLE_FETCHING',
 };
 
 const initialState = {
@@ -21,53 +23,61 @@ const initialState = {
             text: 'I myself will see him with my own eyes I and now another How my heart yearns within me Amen If you say how we will hound him scince the root of the troubles lives in him you should fear the sword yourself For wrath will bring punishment by the sword And them you will know that there is judment'
         }
     ],
-    profileInfoData: {
-        id: 1,
-        firstName: 'Archer',
-        surname: 'Archer',
-        status: 'dead inside',
-        dateOfBirth: '30.03.1986',
-        religion: 'ornitarionism',
-        avatar: 'https://sun9-68.userapi.com/impg/12EYl0H74Hwiw95LDIs7HfrcsBva63QR2xf3aw/laaW_OYil8I.jpg?size=627x564&quality=96&sign=66c38dbd91ea9d142994527ecfeb7d29&type=album',
-        topImg: 'http://i.imgur.com/wYuJwNi.jpg'
-    },
     newPostText: '',
+    profileInfoData: null,
+    isFetching: true,
 };
 
 
 export const profileReducer = (state = initialState, action) => {
-
-    const addPost = () => {
-        state.postsData.push({
-            id: 4,
-            avatar: 'https://sun9-68.userapi.com/impg/12EYl0H74Hwiw95LDIs7HfrcsBva63QR2xf3aw/laaW_OYil8I.jpg?size=627x564&quality=96&sign=66c38dbd91ea9d142994527ecfeb7d29&type=album',
-            text: state.newPostText
-        });
-
-        state.newPostText = '';
-    };
-    const writeNewPost = text => {
-        state.newPostText = text;
-    };
-
     switch (action.type) {
+
         case actionTypes.addPost:
-            addPost();
-            return state;
+            return {
+                ...state,
+                postsData: [...state.postsData, {
+                    id: 4,
+                    avatar: 'https://sun9-68.userapi.com/impg/12EYl0H74Hwiw95LDIs7HfrcsBva63QR2xf3aw/laaW_OYil8I.jpg?size=627x564&quality=96&sign=66c38dbd91ea9d142994527ecfeb7d29&type=album',
+                    text: state.newPostText
+                }],
+                newPostText: ''
+            };
 
         case actionTypes.writeNewPost:
-            writeNewPost(action.text);
-            return state;
+            return {
+                ...state,
+                newPostText: action.text
+            };
+
+        case actionTypes.setProfile:
+            return {
+                ...state,
+                profileInfoData: action.profileInfo
+            };
+
+        case actionTypes.toggleFetching:
+            return {
+                ...state,
+                isFetching: action.isFetching
+            };
 
         default:
             return state;
     }
 };
 
-export const addPostActionCreator = () => ({
+export const addPost = () => ({
     type: actionTypes.addPost
 });
-export const writeNewPostActionCreator = text => ({
+export const writeNewPost = (text) => ({
     type: actionTypes.writeNewPost,
-    text: text
+    text
+});
+export const setProfile = (profileInfo) => ({
+    type: actionTypes.setProfile,
+    profileInfo
+});
+export const toggleFetching = (isFetching) => ({
+    type: actionTypes.toggleFetching,
+    isFetching
 });

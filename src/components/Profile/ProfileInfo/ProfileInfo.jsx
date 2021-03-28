@@ -1,20 +1,25 @@
-import profileInfoClasses from './ProfileInfo.module.css';
+import s from './ProfileInfo.module.css';
+import topImg from './../../../assets/images/topImg.jpg';
+import defaultAvatar from './../../../assets/images/defaultAvatar.jpg';
 
 const ProfileInfo = (props) => {
     return (
         <div>
-            <div className={profileInfoClasses.topImg}>
-                <img src={props.state.topImg} alt="top image" />
+            <div className={s.topImg}>
+                <img src={topImg} alt="top image" />
             </div>
 
-            <div className={profileInfoClasses.profile}>
-                <img src={props.state.avatar} alt="avatar" />
-
-                <div className={profileInfoClasses.description}>
-                    <p className={profileInfoClasses.title}>{props.state.firstName} {props.state.surname}</p>
-                    <p className={profileInfoClasses.status}>{props.state.status}</p>
-                    <p>{`Date of birth: ${props.state.dateOfBirth}`}</p>
-                    <p>{`Religion: ${props.state.religion}`}</p>
+            <div className={s.profile}>
+                {(props.photos.large) ?
+                    <img src={props.photos.large} alt="avatar" />
+                    :
+                    <img src={defaultAvatar} alt="avatar" />
+                }
+                <div className={s.description}>
+                    <p className={s.title}>{props.fullName}</p>
+                    <p className={s.status}>{props.status}</p>
+                    <p>{`Date of birth: ${props.dateOfBirth}`}</p>
+                    <p>{`Religion: ${props.religion}`}</p>
                 </div>
             </div>
         </div>

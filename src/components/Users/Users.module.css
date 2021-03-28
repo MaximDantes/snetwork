@@ -46,3 +46,13 @@
     display: flex;
     width: 100%;
 }
+
+.users input {
+    width: 20%;
+    margin: 5px;
+    border: 1px solid #919191;
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    padding: 4px;
+    font-size: 20px;
+}

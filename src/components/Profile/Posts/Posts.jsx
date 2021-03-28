@@ -1,13 +1,23 @@
+import NewPost from './NewPost/NewPost';
 import Post from './Post/Post';
-import postsClasses from './Posts.module.css';
+import s from './Posts.module.css';
 
 const Posts = (props) => {
-    let postsItems = props.state.map(item => (<Post avatar={item.avatar} text={item.text} />));
-    postsItems.reverse();
+    let posts = props.posts.map(item => (
+        <Post
+            avatar={item.avatar}
+            text={item.text}
+        />
+    ));
+    posts.reverse();
 
     return (
         <div>
-            { postsItems}
+            <NewPost
+                writeNewPost={props.writeNewPost}
+                addPost={props.addPost}
+            />
+            {posts}
         </div>
     );
 }

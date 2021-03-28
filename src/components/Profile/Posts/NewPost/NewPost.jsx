@@ -1,17 +1,13 @@
 import React from 'react';
-import { addPostActionCreator, writeNewPostActionCreator } from '../../../redux/profileReducer';
 import newPostClasses from './NewPost.module.css';
 
 const NewPost = (props) => {
-
-
-
     return (
         <div className={newPostClasses.newPost}>
             <textarea
                 value={props.newPostText}
                 placeholder='Write your post here...'
-                onChange={props.writeNewPost}
+                onChange={(e) => props.writeNewPost(e.target.value)}
             />
 
             <div className={newPostClasses.buttonWrapper}>

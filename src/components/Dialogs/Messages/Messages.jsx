@@ -1,9 +1,10 @@
 import Message from './Message/Message';
 import messagesClasses from './Messages.module.css';
-import NewMessageContainer from './NewMessage/NewMessageContainer';
+import NewMessage from './NewMessage/NewMessage';
+
 
 const Messages = (props) => {
-    let messagesItems = props.state.messagesData.map(item => (<Message text={item.text} sender={item.sender} />));
+    let messagesItems = props.dialogs.messagesData.map(item => (<Message text={item.text} sender={item.sender} />));
 
     return (
         <div className={messagesClasses.messages}>
@@ -12,9 +13,10 @@ const Messages = (props) => {
                 {messagesItems}
             </div>
 
-            <NewMessageContainer
-                state={props.state}
-                dispatch={props.dispatch}
+            <NewMessage
+                newMessageText={props.dialogs.newMessageText}
+                writeNewMessage={props.writeNewMessage}
+                sendMessage={props.sendMessage}
             />
 
         </div>

@@ -1,10 +1,9 @@
 import style from './Users.module.css';
 import defaultAvatar from './../../assets/images/defaultAvatar.jpg';
+import { NavLink } from 'react-router-dom';
 
 const Users = (props) => {
 
-    const startPages = [1, 2, 3];
-    const finalPages = [props.pagesCount - 2, props.pagesCount - 1, props.pagesCount];
     const pages = [1, '...'];
     for (let i = props.currentPage - 2; i <= props.currentPage + 2; i++) {
         pages.push(i);
@@ -15,11 +14,24 @@ const Users = (props) => {
         return (
             <div className={style.user}>
                 <div>
-                    <img src={item.photos.large ? item.photos.large : defaultAvatar} alt="avatar" />
+                    <NavLink to={`/profile/${item.id}`}>
+                        <img src={item.photos.large ? item.photos.large : defaultAvatar} alt="avatar" />
+                    </NavLink>
                     {
                         item.followed ?
-                            <button onClick={() => props.unfollow(item.id)}>Unfollow</button> :
-                            <button onClick={() => props.follow(item.id)}>Follow</button>
+                            <button
+                                disabled={props.followingInProgress.some(id => id === item.id)}
+                                onClick={() => { props.unfollow(item.id); }}
+                            >
+                                Unfollow
+                            </button>
+                            :
+                            <button
+                                disabled={props.followingInProgress.some(id => id === item.id)}
+                                onClick={() => { props.follow(item.id); }}
+                            >
+                                Follow
+                            </button>
                     }
                 </div>
 
@@ -33,6 +45,15 @@ const Users = (props) => {
 
     return (
         <div className={style.users}>
+
+            <div>
+                <input
+                    value={props.findText}
+                    onChange={(e) => props.writeFindText(e.target.value)}
+                    placeholder='Search...'
+                />
+                <button onClick={props.find}>Find</button>
+            </div>
 
             <div className={style.nav}>
                 <button onClick={() => props.changePage(props.currentPage - 1)}>back</button>
