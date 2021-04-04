@@ -1,10 +1,12 @@
-import axios from 'axios';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
-import { setProfile, toggleFetching } from '../../redux/profileReducer';
+import { withRouter } from 'react-router-dom';
+import {getProfile, getStatus, updateStatus} from '../../redux/profileReducer';
 import Preloader from '../common/Preloader/Preloader';
 import Profile from './Profile';
+import withAuthRedirect from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
+import {logout} from "../../redux/authReducer";
 
 class ProfileContainer extends Component {
 
@@ -13,12 +15,8 @@ class ProfileContainer extends Component {
         if (!id) {
             id = this.props.id;
         }
-        this.props.toggleFetching(true);
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${id}`)
-            .then(response => {
-                this.props.setProfile(response.data);
-                this.props.toggleFetching(false);
-            });
+        this.props.getStatus(id);
+        this.props.getProfile(id);
     }
 
     render() {
@@ -38,10 +36,13 @@ class ProfileContainer extends Component {
 
 const mapStateToProps = (state) => ({
     profileInfo: state.profile.profileInfoData,
+    status: state.profile.status,
     isFetching: state.profile.isFetching,
     id: state.auth.id,
 });
 
-const ProfileContainerWithURLData = withRouter(ProfileContainer)
-
-export default connect(mapStateToProps, { setProfile, toggleFetching })(ProfileContainerWithURLData);
+export default compose(
+    connect(mapStateToProps, { getProfile, getStatus, updateStatus, logout }),
+    withRouter,
+    withAuthRedirect
+)(ProfileContainer);

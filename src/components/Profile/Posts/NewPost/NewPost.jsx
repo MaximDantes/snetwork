@@ -1,20 +1,31 @@
 import React from 'react';
-import newPostClasses from './NewPost.module.css';
+import s from './NewPost.module.css';
+import Button from './../../../common/Button/Button'
+import {Field, reduxForm} from "redux-form";
+import {maxLength, required} from "../../../../utils/validators/validators";
+import Textarea from "../../../common/FormControls/Textarea/Textarea";
 
-const NewPost = (props) => {
+const maxLength10 = maxLength(10);
+
+let NewPost = (props) => {
     return (
-        <div className={newPostClasses.newPost}>
-            <textarea
-                value={props.newPostText}
+        <form className={s.newPost} onSubmit={props.handleSubmit}>
+            <Field
+                component={Textarea}
+                name='postText'
                 placeholder='Write your post here...'
-                onChange={(e) => props.writeNewPost(e.target.value)}
+                validate={[required, maxLength10]}
             />
 
-            <div className={newPostClasses.buttonWrapper}>
-                <button onClick={props.addPost}>Create Post</button>
+            <div className={s.buttonWrapper}>
+                <Button text='Create Post'/>
             </div>
-        </div>
+        </form>
     );
 }
+
+NewPost = reduxForm({
+    form: 'newPost'
+})(NewPost);
 
 export default NewPost;

@@ -8,6 +8,8 @@ import {
 } from "../../redux/usersReducer";
 import Users from './Users';
 import Preloader from "../common/Preloader/Preloader";
+import withAuthRedirect from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 class UsersContainer extends Component {
 
@@ -56,8 +58,7 @@ class UsersContainer extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
+const mapStateToProps = (state) => ({
         usersData: state.users.usersData,
         pageSize: state.users.pageSize,
         totalUsersCount: state.users.totalUsersCount,
@@ -65,11 +66,14 @@ const mapStateToProps = (state) => {
         findText: state.users.findText,
         isFetching: state.users.isFetching,
         followingInProgress: state.users.followingInProgress,
-    }
-};
+});
 
-export default connect(mapStateToProps, {
-    follow, unfollow, setUsers, setCurrentPage,
-    setTotalUsersCount, toggleFetching, writeFindText,
-    toggleFollowingProgress, getUsers, find,
-})(UsersContainer);
+export default compose(
+    connect(mapStateToProps, {
+        follow, unfollow, setUsers, setCurrentPage,
+        setTotalUsersCount, toggleFetching, writeFindText,
+        toggleFollowingProgress, getUsers, find,
+    }),
+    withAuthRedirect
+)(UsersContainer);
+

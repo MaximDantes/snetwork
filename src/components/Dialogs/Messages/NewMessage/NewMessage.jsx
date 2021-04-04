@@ -1,20 +1,22 @@
-import React from 'react';
-import newMessageClasses from './NewMessage.module.css';
+import s from './NewMessage.module.css';
+import {Field, reduxForm} from "redux-form";
+import Button from "../../../common/Button/Button";
 
-const NewMessage = (props) => {
+let NewMessage = (props) => {
     return (
-        <div className={newMessageClasses.newMessage}>
-
-            <textarea
+        <form className={s.newMessage} onSubmit={props.handleSubmit}>
+            <Field
+                component='textarea'
+                name='message'
                 placeholder='Write your message here...'
-                value={props.newMessageText}
-                onChange={props.writeNewMessage}
             />
-
-            <button onClick={props.sendMessage}>Send</button>
-        </div>
-
+            <Button text='Send'/>
+        </form>
     );
 }
+
+NewMessage = reduxForm({
+    form: 'newMessage'
+})(NewMessage);
 
 export default NewMessage;

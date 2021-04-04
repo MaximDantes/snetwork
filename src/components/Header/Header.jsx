@@ -1,8 +1,10 @@
 import { NavLink } from 'react-router-dom';
 import s from './Header.module.css';
 import logo from './../../assets/images/logo.svg'
+import {useEffect} from "react";
 
 const Header = (props) => {
+
     return (
         <header>
 

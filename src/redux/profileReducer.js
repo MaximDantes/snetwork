@@ -1,7 +1,9 @@
+import {profileApi} from "../api/api";
+
 const actionTypes = {
     addPost: 'ADD_POST',
-    writeNewPost: 'WRITE_NEW_POST',
     setProfile: 'SET_PROFILE',
+    setStatus: 'SET_STATUS',
     toggleFetching: 'TOGGLE_FETCHING',
 };
 
@@ -23,11 +25,10 @@ const initialState = {
             text: 'I myself will see him with my own eyes I and now another How my heart yearns within me Amen If you say how we will hound him scince the root of the troubles lives in him you should fear the sword yourself For wrath will bring punishment by the sword And them you will know that there is judment'
         }
     ],
-    newPostText: '',
     profileInfoData: null,
+    status: null,
     isFetching: true,
 };
-
 
 export const profileReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -38,21 +39,21 @@ export const profileReducer = (state = initialState, action) => {
                 postsData: [...state.postsData, {
                     id: 4,
                     avatar: 'https://sun9-68.userapi.com/impg/12EYl0H74Hwiw95LDIs7HfrcsBva63QR2xf3aw/laaW_OYil8I.jpg?size=627x564&quality=96&sign=66c38dbd91ea9d142994527ecfeb7d29&type=album',
-                    text: state.newPostText
+                    text: action.text
                 }],
                 newPostText: ''
-            };
-
-        case actionTypes.writeNewPost:
-            return {
-                ...state,
-                newPostText: action.text
             };
 
         case actionTypes.setProfile:
             return {
                 ...state,
                 profileInfoData: action.profileInfo
+            };
+
+        case actionTypes.setStatus:
+            return {
+                ...state,
+                status: action.status
             };
 
         case actionTypes.toggleFetching:
@@ -66,18 +67,49 @@ export const profileReducer = (state = initialState, action) => {
     }
 };
 
-export const addPost = () => ({
-    type: actionTypes.addPost
-});
-export const writeNewPost = (text) => ({
-    type: actionTypes.writeNewPost,
+//action creators
+export const addPost = (text) => ({
+    type: actionTypes.addPost,
     text
 });
 export const setProfile = (profileInfo) => ({
     type: actionTypes.setProfile,
     profileInfo
 });
+export const setStatus = (status) => ({
+    type: actionTypes.setStatus,
+    status,
+});
 export const toggleFetching = (isFetching) => ({
     type: actionTypes.toggleFetching,
     isFetching
 });
+
+//thunk creators
+export const getProfile = (id) => {
+    return (dispatch) => {
+        dispatch(toggleFetching(true));
+        profileApi.getProfile(id)
+            .then(response => {
+                dispatch(setProfile(response));
+                dispatch(toggleFetching(false));
+            });
+    }
+}
+export const getStatus = (id) => {
+    return (dispatch) => {
+        profileApi.getStatus(id)
+            .then(response => {
+                dispatch(setStatus(response));
+            })
+    }
+}
+export const updateStatus = (status) => {
+    return (dispatch) => {
+        profileApi.updateStatus(status)
+            .then(response => {
+                debugger
+                dispatch(setStatus(status))
+            })
+    }
+}

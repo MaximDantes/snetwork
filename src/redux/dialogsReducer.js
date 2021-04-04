@@ -1,6 +1,5 @@
 const actionTypes = {
     sendMessage: 'SEND_MESSAGE',
-    writeNewMessage: 'WRITE_NEW_MESSAGE',
 };
 
 const initialState = {
@@ -43,51 +42,20 @@ const initialState = {
         { id: 5, sender: 1, receiver: 0, text: 'Unknow to death' },
         { id: 6, sender: 1, receiver: 0, text: 'Not know to life' },
     ],
-    newMessageText: '',
 };
 
 export const dialogsReducer = (state = initialState, action) => {
 
-    const sendMessage = () => {
-        const stateCopy = { ...state };
-        stateCopy.messagesData = [...state.messagesData];
-
-        stateCopy.messagesData.push({
-            id: 2,
-            sender: 1,
-            receiver: 0,
-            text: stateCopy.newMessageText
-        });
-
-        stateCopy.newMessageText = '';
-
-        return stateCopy;
-    };
-    const writeNewMessage = text => {
-        const stateCopy = { ...state };
-        stateCopy.newMessageText = text;
-
-        return stateCopy;
-    };
-
     switch (action.type) {
         case actionTypes.sendMessage:
-            const text = state.messagesData;
             return {
                 ...state,
                 messagesData: [...state.messagesData, {
                     id: 2,
                     sender: 1,
                     receiver: 0,
-                    text: text
+                    text: action.message
                 }],
-                newMessageText: ''
-            };
-
-        case actionTypes.writeNewMessage:
-            return {
-                ...state,
-                newMessageText: action.text
             };
 
         default:
@@ -95,10 +63,7 @@ export const dialogsReducer = (state = initialState, action) => {
     }
 };
 
-export const sendMessageActionCreator = () => ({
-    type: actionTypes.sendMessage
-});
-export const writeNewMessageActionCreator = text => ({
-    type: actionTypes.writeNewMessage,
-    text: text
+export const sendMessage = (message) => ({
+    type: actionTypes.sendMessage,
+    message
 });

@@ -3,6 +3,11 @@ import Post from './Post/Post';
 import s from './Posts.module.css';
 
 const Posts = (props) => {
+
+    const addPost = (formData) => {
+        props.addPost(formData.postText);
+    }
+
     let posts = props.posts.map(item => (
         <Post
             avatar={item.avatar}
@@ -13,10 +18,7 @@ const Posts = (props) => {
 
     return (
         <div>
-            <NewPost
-                writeNewPost={props.writeNewPost}
-                addPost={props.addPost}
-            />
+            <NewPost onSubmit={addPost}/>
             {posts}
         </div>
     );

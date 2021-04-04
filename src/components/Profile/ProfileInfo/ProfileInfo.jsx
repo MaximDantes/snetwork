@@ -1,6 +1,8 @@
 import s from './ProfileInfo.module.css';
 import topImg from './../../../assets/images/topImg.jpg';
 import defaultAvatar from './../../../assets/images/defaultAvatar.jpg';
+import Status from './Status';
+import Button from "../../common/Button/Button";
 
 const ProfileInfo = (props) => {
     return (
@@ -10,17 +12,21 @@ const ProfileInfo = (props) => {
             </div>
 
             <div className={s.profile}>
-                {(props.photos.large) ?
+                {
+                    (props.photos.large)
+                    ?
                     <img src={props.photos.large} alt="avatar" />
                     :
                     <img src={defaultAvatar} alt="avatar" />
                 }
                 <div className={s.description}>
                     <p className={s.title}>{props.fullName}</p>
-                    <p className={s.status}>{props.status}</p>
-                    <p>{`Date of birth: ${props.dateOfBirth}`}</p>
-                    <p>{`Religion: ${props.religion}`}</p>
+                    <Status status={props.status} updateStatus={props.updateStatus} />
                 </div>
+            </div>
+
+            <div>
+                <Button text='Logout' onClick={props.logout}></Button>
             </div>
         </div>
     );

@@ -2,6 +2,7 @@ import { authApi } from "../api/api";
 
 const actionTypes = {
     setUser: 'SET_USER',
+    unsetUser: 'UNSET_USER',
 };
 
 const initialState = {
@@ -21,6 +22,15 @@ export const authReducer = (state = initialState, action) => {
                 isAuth: true,
             };
 
+        case actionTypes.unsetUser:
+            return {
+                ...state,
+                id: null,
+                email: null,
+                login: null,
+                isAuth: false,
+            }
+
         default:
             return state;
     }
@@ -31,6 +41,9 @@ export const setUser = (id, email, login) => ({
     data: {
         id, email, login
     }
+});
+export const unsetUser = () => ({
+    type: actionTypes.unsetUser
 });
 
 export const auth = () => {
@@ -45,3 +58,24 @@ export const auth = () => {
             });
     }
 };
+export const login = (login, password, rememberMe) => {
+    return (dispatch) => {
+        authApi.login(login, password, rememberMe)
+            .then(response => {
+                if (response.resultCode === 0) {
+                    dispatch(auth());
+                }
+            })
+    }
+}
+export const logout = () => {
+    return (dispatch) => {
+        authApi.logout()
+            .then(response => {
+                if (response.resultCode === 0){
+                    debugger
+                    dispatch(unsetUser())
+                }
+            })
+    }
+}
