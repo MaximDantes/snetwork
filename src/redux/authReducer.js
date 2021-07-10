@@ -48,7 +48,7 @@ export const unsetUser = () => ({
 
 export const auth = () => {
     return (dispatch) => {
-        authApi.setUser()
+        return authApi.setUser()
             .then(response => {
                 if (response.resultCode === 0) {
                     const { id, email, login } = response.data;

@@ -6,8 +6,10 @@ import { friendsReducer } from "./friendsReducer";
 import { profileReducer } from "./profileReducer";
 import usersReducer from "./usersReducer";
 import { reducer as formReducer} from "redux-form";
+import {appReducer} from "./appReducer";
 
 const reducers = combineReducers({
+    app: appReducer,
     profile: profileReducer,
     dialogs: dialogsReducer,
     users: usersReducer,

@@ -4,11 +4,6 @@ import { auth } from './../../redux/authReducer'
 import { connect } from 'react-redux';
 
 class HeaderContainer extends Component {
-
-    componentDidMount = () => {
-        this.props.auth();
-    }
-
     render() {
         return (
             <Header {...this.props} />

@@ -3,15 +3,15 @@ import s from './NewPost.module.css';
 import Button from './../../../common/Button/Button'
 import {Field, reduxForm} from "redux-form";
 import {maxLength, required} from "../../../../utils/validators/validators";
-import Textarea from "../../../common/FormControls/Textarea/Textarea";
+import {FormControls} from "../../../common/FormControls/FormControls";
 
-const maxLength10 = maxLength(10);
+const maxLength10 = maxLength(10)
 
 let NewPost = (props) => {
     return (
         <form className={s.newPost} onSubmit={props.handleSubmit}>
             <Field
-                component={Textarea}
+                component={FormControls}
                 name='postText'
                 placeholder='Write your post here...'
                 validate={[required, maxLength10]}
@@ -21,11 +21,11 @@ let NewPost = (props) => {
                 <Button text='Create Post'/>
             </div>
         </form>
-    );
+    )
 }
 
 NewPost = reduxForm({
     form: 'newPost'
-})(NewPost);
+})(NewPost)
 
-export default NewPost;
+export default NewPost

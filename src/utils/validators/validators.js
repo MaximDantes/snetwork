@@ -4,9 +4,9 @@ export const required = value => {
     }
 }
 
-export const maxLength = (max) =>
+export const maxLength = max =>
     value => {
         if (value && value.length > max) {
-            return 'length must be less then 100'
+            return `length must be less then ${max}`
         }
     }

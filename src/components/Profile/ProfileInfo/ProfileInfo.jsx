@@ -14,12 +14,14 @@ const ProfileInfo = (props) => {
             <div className={s.profile}>
                 {
                     (props.photos.large)
-                    ?
-                    <img src={props.photos.large} alt="avatar" />
-                    :
-                    <img src={defaultAvatar} alt="avatar" />
+                        ?
+                        <img src={props.photos.large} alt="avatar" />
+                        :
+                        <img src={defaultAvatar} alt="avatar" />
                 }
-                <div className={s.description}>
+
+
+                <div>
                     <p className={s.title}>{props.fullName}</p>
                     <Status status={props.status} updateStatus={props.updateStatus} />
                 </div>
@@ -29,7 +31,7 @@ const ProfileInfo = (props) => {
                 <Button text='Logout' onClick={props.logout}></Button>
             </div>
         </div>
-    );
+    )
 }
 
 export default ProfileInfo;

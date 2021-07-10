@@ -1,8 +1,8 @@
-.formControl {
-
+.formControl div {
+    display: inline;
 }
 
-.error textarea {
+.error textarea, error input {
     border: 1px solid #ff0000;
 }
 
