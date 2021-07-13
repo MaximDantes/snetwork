@@ -1,16 +1,31 @@
 import style from './Users.module.css';
 import defaultAvatar from './../../assets/images/defaultAvatar.jpg';
 import { NavLink } from 'react-router-dom';
+import Paginator from '../common/Paginator/Paginator'
+import Button from '../common/Button/Button'
 
-const Users = (props) => {
+const Users = ({currentPage, pagesCount, usersData, followingInProgress, toggleFollowing, findText,
+                   writeFindText, find, changePage}) => {
 
+    // TODO paginator
     const pages = [1, '...'];
-    for (let i = props.currentPage - 2; i <= props.currentPage + 2; i++) {
-        pages.push(i);
-    }
-    pages.push('...', props.pagesCount)
+    if (currentPage <= 3) pages.pop()
 
-    const users = props.usersData.map(item => {
+    if (currentPage < 5) pages.push(2, 3, 4)
+
+    if (currentPage > pagesCount - 5) pages.push(pagesCount - 3, pagesCount - 2, pagesCount - 1)
+
+    if (currentPage >= 5 && currentPage <= pagesCount - 5) {
+        for (let i = currentPage - 2; i <= currentPage + 2; i++) {
+                pages.push(i)
+        }
+    }
+
+    if (currentPage < pagesCount - 2) pages.push('...')
+    pages.push(pagesCount)
+
+
+    const users = usersData.map(item => {
         return (
             <div className={style.user}>
                 <div>
@@ -19,19 +34,18 @@ const Users = (props) => {
                     </NavLink>
                     {
                         item.followed ?
-                            <button
-                                disabled={props.followingInProgress.some(id => id === item.id)}
-                                onClick={() => { props.unfollow(item.id); }}
-                            >
-                                Unfollow
-                            </button>
+                            <Button
+                                disabled={followingInProgress.some(id => id === item.id)}
+                                onClick={() => {toggleFollowing(item.id, false)}}
+                                text={'Unfollow'}
+                            />
                             :
-                            <button
-                                disabled={props.followingInProgress.some(id => id === item.id)}
-                                onClick={() => { props.follow(item.id); }}
-                            >
-                                Follow
-                            </button>
+                            <Button
+                                disabled={followingInProgress.some(id => id === item.id)}
+                                onClick={() => {toggleFollowing(item.id, true)}}
+                                text={'Follow'}
+                            />
+
                     }
                 </div>
 
@@ -48,23 +62,15 @@ const Users = (props) => {
 
             <div>
                 <input
-                    value={props.findText}
-                    onChange={(e) => props.writeFindText(e.target.value)}
+                    value={findText}
+                    onChange={(e) => writeFindText(e.target.value)}
                     placeholder='Search...'
                 />
-                <button onClick={props.find}>Find</button>
+                <Button onClick={find} text={'Find'}/>
             </div>
 
             <div className={style.nav}>
-                <button onClick={() => props.changePage(props.currentPage - 1)}>back</button>
-                <button onClick={() => props.changePage(props.currentPage + 1)}>forward</button>
-
-                {pages.map(item => <span
-                    className={props.currentPage === item && style.current}
-                    onClick={() => props.changePage(item)}
-                >
-                    {item}
-                </span>)}
+                <Paginator currentPage={currentPage} pagesCount={pagesCount} changePage={changePage} />
             </div>
 
             {users}

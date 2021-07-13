@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
     headers: {
         'API-KEY': 'a1d94230-84f9-401a-8547-9f4808e1cd45'
     }
-});
+})
 
 export const usersApi = {
     getUsers: (pageSize = 10, currentPage = 1) => {
@@ -19,14 +19,15 @@ export const usersApi = {
             .then(response => response.data);
     },
 
-    unfollow: (id) => {
-        return axiosInstance.delete(`follow/${id}`)
-            .then(response => response.data);
-    },
+    toggleFollowing: (id, follow) => {
+        if (follow){
+            return axiosInstance.post(`follow/${id}`)
+                .then(response => response.data);
 
-    follow: (id) => {
-        return axiosInstance.post(`follow/${id}`)
-            .then(response => response.data);
+        } else {
+            return axiosInstance.delete(`follow/${id}`)
+                .then(response => response.data);
+        }
     },
 }
 

@@ -15,27 +15,18 @@
     margin: 0 20px;
 }
 
-.users button {
-    margin: 0 5px;
-    padding: 5px;
-    font-size: 20px;
-    background: #62dafc;
-    border-radius: 3px;
-}
+/*.users button {*/
+/*    margin: 0 5px;*/
+/*    padding: 5px;*/
+/*    font-size: 20px;*/
+/*    background: #62dafc;*/
+/*    border-radius: 3px;*/
+/*}*/
 
 .user button {
     display: block;
     width: 100px;
     margin: 5px auto;
-}
-
-.current {
-    font-weight: 700;
-}
-
-.users span {
-    margin: 0 3px;
-    cursor: pointer;
 }
 
 .user p {

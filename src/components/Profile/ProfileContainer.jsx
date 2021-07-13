@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {getProfile, getStatus, updateStatus} from '../../redux/profileReducer';
@@ -8,7 +8,7 @@ import withAuthRedirect from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {logout} from "../../redux/authReducer";
 
-class ProfileContainer extends Component {
+class ProfileContainer extends PureComponent {
 
     componentDidMount = () => {
         let id = this.props.match.params.id;
@@ -20,6 +20,7 @@ class ProfileContainer extends Component {
     }
 
     render() {
+
         return (
             <>
                 {

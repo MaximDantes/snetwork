@@ -1,11 +1,12 @@
-import {profileApi} from "../api/api";
+import {profileApi} from '../api/api'
 
 const actionTypes = {
-    addPost: 'ADD_POST',
-    setProfile: 'SET_PROFILE',
-    setStatus: 'SET_STATUS',
-    toggleFetching: 'TOGGLE_FETCHING',
-};
+    addPost: 'profile/ADD_POST',
+    setProfile: 'profile/SET_PROFILE',
+    setStatus: 'profile/SET_STATUS',
+    toggleFetching: 'profile/TOGGLE_FETCHING',
+    deletePost: 'profile/tDELETE_POST'
+}
 
 const initialState = {
     postsData: [
@@ -28,7 +29,7 @@ const initialState = {
     profileInfoData: null,
     status: null,
     isFetching: true,
-};
+}
 
 export const profileReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -42,74 +43,80 @@ export const profileReducer = (state = initialState, action) => {
                     text: action.text
                 }],
                 newPostText: ''
-            };
+            }
 
         case actionTypes.setProfile:
             return {
                 ...state,
                 profileInfoData: action.profileInfo
-            };
+            }
 
         case actionTypes.setStatus:
             return {
                 ...state,
                 status: action.status
-            };
+            }
 
         case actionTypes.toggleFetching:
             return {
                 ...state,
                 isFetching: action.isFetching
-            };
+            }
+
+        case actionTypes.deletePost:
+            return {
+                ...state,
+                postsData: state.postsData.filter(x => x.id != action.postId)
+            }
 
         default:
-            return state;
+            return state
     }
-};
+}
 
-//action creators
+
 export const addPost = (text) => ({
     type: actionTypes.addPost,
     text
-});
+})
+
 export const setProfile = (profileInfo) => ({
     type: actionTypes.setProfile,
     profileInfo
-});
+})
+
 export const setStatus = (status) => ({
     type: actionTypes.setStatus,
     status,
-});
+})
+
 export const toggleFetching = (isFetching) => ({
     type: actionTypes.toggleFetching,
     isFetching
-});
+})
 
-//thunk creators
-export const getProfile = (id) => {
-    return (dispatch) => {
-        dispatch(toggleFetching(true));
-        profileApi.getProfile(id)
-            .then(response => {
-                dispatch(setProfile(response));
-                dispatch(toggleFetching(false));
-            });
-    }
+export const deletePost = (postId) => ({
+    type: actionTypes.deletePost,
+    postId
+})
+
+
+
+export const getProfile = (id) => async (dispatch) => {
+    dispatch(toggleFetching(true))
+
+    const response = await profileApi.getProfile(id)
+
+    dispatch(setProfile(response))
+    dispatch(toggleFetching(false))
 }
-export const getStatus = (id) => {
-    return (dispatch) => {
-        profileApi.getStatus(id)
-            .then(response => {
-                dispatch(setStatus(response));
-            })
-    }
+
+export const getStatus = (id) => async (dispatch) => {
+    const response = await profileApi.getStatus(id)
+    dispatch(setStatus(response))
 }
-export const updateStatus = (status) => {
-    return (dispatch) => {
-        profileApi.updateStatus(status)
-            .then(response => {
-                debugger
-                dispatch(setStatus(status))
-            })
-    }
+
+export const updateStatus = (status) => async (dispatch) => {
+    const response = await profileApi.updateStatus(status)
+    dispatch(setStatus(status))
 }

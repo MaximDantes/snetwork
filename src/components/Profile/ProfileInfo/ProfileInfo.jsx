@@ -1,8 +1,8 @@
 import s from './ProfileInfo.module.css';
 import topImg from './../../../assets/images/topImg.jpg';
 import defaultAvatar from './../../../assets/images/defaultAvatar.jpg';
-import Status from './Status';
 import Button from "../../common/Button/Button";
+import ProfileStatus from './ProfileStatus'
 
 const ProfileInfo = (props) => {
     return (
@@ -23,7 +23,7 @@ const ProfileInfo = (props) => {
 
                 <div>
                     <p className={s.title}>{props.fullName}</p>
-                    <Status status={props.status} updateStatus={props.updateStatus} />
+                    <ProfileStatus status={props.status} updateStatus={props.updateStatus} />
                 </div>
             </div>
 

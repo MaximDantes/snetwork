@@ -7,9 +7,9 @@ import Button from "../common/Button/Button";
 import {Input} from "../common/FormControls/FormControls";
 import {required} from "../../utils/validators/validators";
 
-let LoginForm = (props) => {
+let LoginForm = ({handleSubmit}) => {
     return (
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <div>
                 <Field
                     type='text'

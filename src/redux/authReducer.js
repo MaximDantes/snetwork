@@ -1,9 +1,9 @@
-import { authApi } from "../api/api";
+import {authApi} from '../api/api'
 
 const actionTypes = {
-    setUser: 'SET_USER',
-    unsetUser: 'UNSET_USER',
-};
+    setUser: 'auth/SET_USER',
+    unsetUser: 'auth/UNSET_USER',
+}
 
 const initialState = {
     id: null,
@@ -13,14 +13,14 @@ const initialState = {
 }
 
 export const authReducer = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
 
         case actionTypes.setUser:
             return {
                 ...state,
                 ...action.data,
                 isAuth: true,
-            };
+            }
 
         case actionTypes.unsetUser:
             return {
@@ -32,7 +32,7 @@ export const authReducer = (state = initialState, action) => {
             }
 
         default:
-            return state;
+            return state
     }
 }
 
@@ -41,41 +41,33 @@ export const setUser = (id, email, login) => ({
     data: {
         id, email, login
     }
-});
+})
+
 export const unsetUser = () => ({
     type: actionTypes.unsetUser
-});
+})
 
-export const auth = () => {
-    return (dispatch) => {
-        return authApi.setUser()
-            .then(response => {
-                if (response.resultCode === 0) {
-                    const { id, email, login } = response.data;
+export const auth = () => async (dispatch) => {
+    const response = await authApi.setUser()
 
-                    dispatch(setUser(id, email, login));
-                }
-            });
-    }
-};
-export const login = (login, password, rememberMe) => {
-    return (dispatch) => {
-        authApi.login(login, password, rememberMe)
-            .then(response => {
-                if (response.resultCode === 0) {
-                    dispatch(auth());
-                }
-            })
+    if (response.resultCode === 0) {
+        const {id, email, login} = response.data
+        dispatch(setUser(id, email, login))
     }
 }
-export const logout = () => {
-    return (dispatch) => {
-        authApi.logout()
-            .then(response => {
-                if (response.resultCode === 0){
-                    debugger
-                    dispatch(unsetUser())
-                }
-            })
+
+export const login = (login, password, rememberMe) => async (dispatch) => {
+    const response = await authApi.login(login, password, rememberMe)
+
+    if (response.resultCode === 0) {
+        dispatch(auth())
+    }
+}
+
+export const logout = () => async (dispatch) => {
+    const response = await authApi.logout()
+
+    if (response.resultCode === 0) {
+        dispatch(unsetUser())
     }
 }

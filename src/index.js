@@ -5,17 +5,9 @@ import './index.css';
 import store from './redux/store';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import {fake} from "./redux/usersReducer";
+import MainApp from './App'
 
-ReactDOM.render(
-    <React.StrictMode>
-        <BrowserRouter>
-            <Provider store={store}>
-                <App
-                    state={store.getState()}
-                    dispatch={store.dispatch.bind(store)}
-                />
-            </Provider>
-        </BrowserRouter>
-    </React.StrictMode>,
-    document.getElementById('root')
-);
+//TODO ESLint
+
+ReactDOM.render(<MainApp />, document.getElementById('root'))

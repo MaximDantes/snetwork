@@ -1,36 +1,43 @@
-import { connect } from "react-redux";
-import { Component } from 'react';
+import { connect } from "react-redux"
+import { Component } from 'react'
 import {
-    follow, setCurrentPage, setTotalUsersCount,
-    setUsers, unfollow, toggleFetching,
+    setCurrentPage, setTotalUsersCount,
+    setUsers, toggleFetching,
     writeFindText, toggleFollowingProgress, getUsers,
-    find,
-} from "../../redux/usersReducer";
-import Users from './Users';
-import Preloader from "../common/Preloader/Preloader";
-import withAuthRedirect from "../../hoc/withAuthRedirect";
-import {compose} from "redux";
+    find, toggleFollowing
+} from "../../redux/usersReducer"
+import Users from './Users'
+import Preloader from "../common/Preloader/Preloader"
+import withAuthRedirect from "../../hoc/withAuthRedirect"
+import {compose} from "redux"
+import {
+    getCurrentPage,
+    getFindText, getFollowingInProgress, getIsFetching,
+    getPageSize,
+    getTotalUsersCount,
+    getUsersData
+} from "../../utils/selectors/selectors"
 
 class UsersContainer extends Component {
 
     componentDidMount = () => {
-        this.props.getUsers(this.props.pageSize, this.props.currentPage);
+        this.props.getUsers(this.props.pageSize, this.props.currentPage)
     }
 
     changePage = (pageNumber) => {
         if (pageNumber >= 1 && pageNumber <= this.pagesCount) {            
-            this.props.getUsers(this.props.pageSize, pageNumber);
+            this.props.getUsers(this.props.pageSize, pageNumber)
         }
     }
 
     find = () => {
         if (this.props.findText) {
-            this.props.find(this.props.pageSize, this.props.findText);
+            this.props.find(this.props.pageSize, this.props.findText)
         }
     }
 
     render() {
-        this.pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
+        this.pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize)
         return (
             <div> {
                 this.props.isFetching
@@ -45,8 +52,7 @@ class UsersContainer extends Component {
                         currentPage={this.props.currentPage}
                         followingInProgress={this.props.followingInProgress}
                         findText={this.props.findText}
-                        unfollow={this.props.unfollow}
-                        follow={this.props.follow}
+                        toggleFollowing={this.props.toggleFollowing}
                         changePage={this.changePage}
                         writeFindText={this.props.writeFindText}
                         find={this.find}
@@ -58,22 +64,25 @@ class UsersContainer extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-        usersData: state.users.usersData,
-        pageSize: state.users.pageSize,
-        totalUsersCount: state.users.totalUsersCount,
-        currentPage: state.users.currentPage,
-        findText: state.users.findText,
-        isFetching: state.users.isFetching,
-        followingInProgress: state.users.followingInProgress,
-});
+const mapStateToProps = (state) => {
+    return {
+        usersData: getUsersData(state),
+        pageSize: getPageSize(state),
+        totalUsersCount: getTotalUsersCount(state),
+        currentPage: getCurrentPage(state),
+        findText: getFindText(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state)
+    }
+}
 
 export default compose(
     connect(mapStateToProps, {
-        follow, unfollow, setUsers, setCurrentPage,
+        setUsers, setCurrentPage,
         setTotalUsersCount, toggleFetching, writeFindText,
         toggleFollowingProgress, getUsers, find,
+        toggleFollowing,
     }),
     withAuthRedirect
-)(UsersContainer);
+)(UsersContainer)
 
