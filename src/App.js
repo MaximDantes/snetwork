@@ -16,7 +16,6 @@ import Preloader from './components/common/Preloader/Preloader'
 import {initiailzeApp} from './redux/appReducer'
 import store from './redux/store'
 import UsersContainer from './components/Users/UsersContainer'
-import {Suspense} from 'react'
 import withSuspense from './hoc/withSuspense'
 
 //import Dialogs from "./components/Dialogs/Dialogs";

@@ -6,7 +6,7 @@ const Sender = (props) => {
         <div className={senderClasses.sender}>
             <NavLink to={'/dialogs/' + props.id} activeClassName={senderClasses.active}>
                 <img src={props.avatar} alt="avatar" />
-                <p>{props.firstName}</p>
+                <p>{props.name}</p>
             </NavLink>
         </div>
     );

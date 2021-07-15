@@ -6,7 +6,7 @@ const Senders = (props) => {
     (
         <Sender
             id={item.id}
-            firstName={item.firstName}
+            name={item.name}
             avatar={item.avatar}
         />
     )

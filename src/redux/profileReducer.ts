@@ -1,4 +1,37 @@
 import {profileApi} from '../api/api'
+import customeStore from './customeStore'
+
+type Post = {
+    id: number,
+    avatar: string,
+    text: string
+}
+type InitialStateType = {
+    postsData: Post[],
+    profileInfoData: string | null,
+    status: string | null,
+    isFetching: boolean,
+}
+type AddPostActionType = {
+    type: typeof actionTypes.addPost,
+    text: string
+}
+type SetProfileActionType = {
+    type: typeof actionTypes.setProfile,
+    profileInfo: any
+}
+type SetStatusActionType = {
+    type: typeof actionTypes.setStatus,
+    status: string
+}
+type ToggleFetchingActionType = {
+    type: typeof actionTypes.toggleFetching,
+    isFetching: boolean
+}
+type DeletePostActionType = {
+    type: typeof actionTypes.deletePost,
+    postId: number
+}
 
 const actionTypes = {
     addPost: 'profile/ADD_POST',
@@ -8,7 +41,7 @@ const actionTypes = {
     deletePost: 'profile/tDELETE_POST'
 }
 
-const initialState = {
+const initialState: InitialStateType = {
     postsData: [
         {
             id: 1,
@@ -31,9 +64,8 @@ const initialState = {
     isFetching: true,
 }
 
-export const profileReducer = (state = initialState, action) => {
+export const profileReducer = (state = initialState, action: any) => {
     switch (action.type) {
-
         case actionTypes.addPost:
             return {
                 ...state,
@@ -75,34 +107,33 @@ export const profileReducer = (state = initialState, action) => {
 }
 
 
-export const addPost = (text) => ({
+export const addPost = (text: string): AddPostActionType => ({
     type: actionTypes.addPost,
     text
 })
 
-export const setProfile = (profileInfo) => ({
+export const setProfile = (profileInfo: any): SetProfileActionType => ({
     type: actionTypes.setProfile,
     profileInfo
 })
 
-export const setStatus = (status) => ({
+export const setStatus = (status: string): SetStatusActionType => ({
     type: actionTypes.setStatus,
     status,
 })
 
-export const toggleFetching = (isFetching) => ({
+export const toggleFetching = (isFetching: boolean): ToggleFetchingActionType => ({
     type: actionTypes.toggleFetching,
     isFetching
 })
 
-export const deletePost = (postId) => ({
+export const deletePost = (postId: number): DeletePostActionType => ({
     type: actionTypes.deletePost,
     postId
 })
 
 
-
-export const getProfile = (id) => async (dispatch) => {
+export const getProfile = (id: number) => async (dispatch: any) => {
     dispatch(toggleFetching(true))
 
     const response = await profileApi.getProfile(id)
@@ -111,12 +142,12 @@ export const getProfile = (id) => async (dispatch) => {
     dispatch(toggleFetching(false))
 }
 
-export const getStatus = (id) => async (dispatch) => {
+export const getStatus = (id: number) => async (dispatch: any) => {
     const response = await profileApi.getStatus(id)
     dispatch(setStatus(response))
 }
 
-export const updateStatus = (status) => async (dispatch) => {
+export const updateStatus = (status: string) => async (dispatch: any) => {
     const response = await profileApi.updateStatus(status)
     dispatch(setStatus(status))
 }
