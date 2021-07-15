@@ -4,7 +4,17 @@ import defaultAvatar from './../../../assets/images/defaultAvatar.jpg';
 import Button from "../../common/Button/Button";
 import ProfileStatus from './ProfileStatus'
 
-const ProfileInfo = (props) => {
+type ProfileInfoProps = {
+    fullName: string
+    status: string
+    photos: {
+        large: string
+    }
+    updateStatus(status: string): void
+    logout(): void
+}
+
+const ProfileInfo = (props: ProfileInfoProps) => {
     return (
         <div>
             <div className={s.topImg}>

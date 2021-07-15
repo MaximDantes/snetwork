@@ -1,15 +1,20 @@
-import {useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
-const ProfileStatus = (props) => {
+type Props = {
+    status: string,
+    updateStatus(status: string): void
+}
+
+const ProfileStatus: React.FC<Props> = (props) => {
 
     const [editMode, setEditMode] = useState(false)
     const [status, setStatus] = useState(props.status)
 
-    useEffect(() => {
+    useEffect((): void => {
         setStatus(props.status)
     }, [props.status])
 
-    const toggleEditMode = () => {
+    const toggleEditMode = (): void => {
         if (editMode) {
             setEditMode(false)
             props.updateStatus(status)
@@ -18,7 +23,7 @@ const ProfileStatus = (props) => {
         }
     }
 
-    const onStatusChange = (e) => {
+    const onStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setStatus(e.currentTarget.value)
     }
 

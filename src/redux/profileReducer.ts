@@ -1,5 +1,5 @@
 import {profileApi} from '../api/api'
-import customeStore from './customeStore'
+import { ProfileInfoType } from '../types/types'
 
 type Post = {
     id: number,
@@ -8,7 +8,7 @@ type Post = {
 }
 type InitialStateType = {
     postsData: Post[],
-    profileInfoData: string | null,
+    profileInfoData: ProfileInfoType | null,
     status: string | null,
     isFetching: boolean,
 }
@@ -32,6 +32,7 @@ type DeletePostActionType = {
     type: typeof actionTypes.deletePost,
     postId: number
 }
+
 
 const actionTypes = {
     addPost: 'profile/ADD_POST',
