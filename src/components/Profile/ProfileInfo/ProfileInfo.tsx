@@ -8,7 +8,7 @@ type ProfileInfoProps = {
     fullName: string
     status: string
     photos: {
-        large: string
+        large: string | null
     }
     updateStatus(status: string): void
     logout(): void

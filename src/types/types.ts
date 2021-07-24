@@ -1,5 +1,5 @@
-export type ProfileInfoType = {
-    userId: string
+export type TProfileInfo = {
+    userId: number
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
@@ -14,8 +14,7 @@ export type ProfileInfoType = {
         mainLink: string
     }
     photos: {
-        small: string
-        large: string
-
+        small: string | null
+        large: string | null
     }
 }

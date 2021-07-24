@@ -1,37 +1,42 @@
 import {profileApi} from '../api/api'
-import { ProfileInfoType } from '../types/types'
+import { TProfileInfo } from '../types/types'
+import {ThunkAction, ThunkDispatch} from 'redux-thunk'
+import {TState} from './store'
 
-type Post = {
+type TPost = {
     id: number,
     avatar: string,
     text: string
 }
-type InitialStateType = {
-    postsData: Post[],
-    profileInfoData: ProfileInfoType | null,
+type TInitialState = {
+    postsData: TPost[],
+    profileInfoData: TProfileInfo | null,
     status: string | null,
     isFetching: boolean,
 }
-type AddPostActionType = {
+type TAddPostAction = {
     type: typeof actionTypes.addPost,
     text: string
 }
-type SetProfileActionType = {
+type TSetProfileAction = {
     type: typeof actionTypes.setProfile,
     profileInfo: any
 }
-type SetStatusActionType = {
+type TSetStatusAction = {
     type: typeof actionTypes.setStatus,
     status: string
 }
-type ToggleFetchingActionType = {
+type TToggleFetchingAction = {
     type: typeof actionTypes.toggleFetching,
     isFetching: boolean
 }
-type DeletePostActionType = {
+type TDeletePostAction = {
     type: typeof actionTypes.deletePost,
     postId: number
 }
+type TActions = TAddPostAction | TSetProfileAction | TSetStatusAction | TToggleFetchingAction | TDeletePostAction
+
+type TThunkResult<T> = ThunkAction<T, TState, undefined, TActions>
 
 
 const actionTypes = {
@@ -42,7 +47,7 @@ const actionTypes = {
     deletePost: 'profile/tDELETE_POST'
 }
 
-const initialState: InitialStateType = {
+const initialState: TInitialState = {
     postsData: [
         {
             id: 1,
@@ -108,33 +113,33 @@ export const profileReducer = (state = initialState, action: any) => {
 }
 
 
-export const addPost = (text: string): AddPostActionType => ({
+export const addPost = (text: string): TAddPostAction => ({
     type: actionTypes.addPost,
     text
 })
 
-export const setProfile = (profileInfo: any): SetProfileActionType => ({
+export const setProfile = (profileInfo: any): TSetProfileAction => ({
     type: actionTypes.setProfile,
     profileInfo
 })
 
-export const setStatus = (status: string): SetStatusActionType => ({
+export const setStatus = (status: string): TSetStatusAction => ({
     type: actionTypes.setStatus,
     status,
 })
 
-export const toggleFetching = (isFetching: boolean): ToggleFetchingActionType => ({
+export const toggleFetching = (isFetching: boolean): TToggleFetchingAction => ({
     type: actionTypes.toggleFetching,
     isFetching
 })
 
-export const deletePost = (postId: number): DeletePostActionType => ({
+export const deletePost = (postId: number): TDeletePostAction => ({
     type: actionTypes.deletePost,
     postId
 })
 
 
-export const getProfile = (id: number) => async (dispatch: any) => {
+export const getProfile = (id: number): TThunkResult<void> => async (dispatch) => {
     dispatch(toggleFetching(true))
 
     const response = await profileApi.getProfile(id)
@@ -143,12 +148,12 @@ export const getProfile = (id: number) => async (dispatch: any) => {
     dispatch(toggleFetching(false))
 }
 
-export const getStatus = (id: number) => async (dispatch: any) => {
+export const getStatus = (id: number): TThunkResult<void> => async (dispatch) => {
     const response = await profileApi.getStatus(id)
     dispatch(setStatus(response))
 }
 
-export const updateStatus = (status: string) => async (dispatch: any) => {
-    const response = await profileApi.updateStatus(status)
+export const updateStatus = (status: string): TThunkResult<void> => async (dispatch) => {
+    await profileApi.updateStatus(status)
     dispatch(setStatus(status))
 }

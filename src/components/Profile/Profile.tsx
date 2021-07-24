@@ -1,9 +1,9 @@
 import ProfileInfo from './ProfileInfo/ProfileInfo';
-import { ProfileInfoType } from '../../types/types'
+import { TProfileInfo } from '../../types/types'
 import PostsContainer from './Posts/PostsContainer';
 
 type ProfileProps = {
-    profileInfo: ProfileInfoType
+    profileInfo: TProfileInfo
     status: string
     updateStatus(status: string): void
     logout(): void

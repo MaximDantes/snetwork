@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {State} from '../../redux/store'
+import {TState} from '../../redux/store'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
 import {getProfile, getStatus, updateStatus} from '../../redux/profileReducer'
@@ -8,10 +8,10 @@ import Profile from './Profile'
 import withAuthRedirect from '../../hoc/withAuthRedirect'
 import {compose} from 'redux'
 import {logout} from '../../redux/authReducer'
-import {ProfileInfoType} from '../../types/types'
+import {TProfileInfo} from '../../types/types'
 
 type Props = {
-    profileInfo: ProfileInfoType
+    profileInfo: TProfileInfo
     id: number
     status: string
     isFetching: boolean
@@ -51,7 +51,7 @@ const ProfileContainer: React.FC<Props> = (props) => {
     )
 }
 
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: TState) => ({
     profileInfo: state.profile.profileInfoData,
     status: state.profile.status,
     isFetching: state.profile.isFetching,

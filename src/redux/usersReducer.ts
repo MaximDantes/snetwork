@@ -1,12 +1,12 @@
-import {usersApi} from '../api/api'
+import {ResultCodes, usersApi} from '../api/api'
 
 type User = {
     id: number,
     name: string,
-    status: string,
+    status: string | null,
     photos: {
-        small: string,
-        large: string
+        small: string | null,
+        large: string | null
     },
     followed: boolean
 }
@@ -186,7 +186,7 @@ export const toggleFollowing = (id: number, follow: boolean) => async (dispatch:
 
     const response = await usersApi.toggleFollowing(id, follow)
 
-    if (response.resultCode === 0) {
+    if (response.resultCode === ResultCodes.Success) {
         dispatch(toggleFollowingSuccess(id, follow))
         dispatch(toggleFollowingProgress(false, id))
     }

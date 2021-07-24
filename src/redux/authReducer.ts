@@ -1,45 +1,41 @@
-import {authApi} from '../api/api'
+import {authApi, ResultCodes} from '../api/api'
 
-type InitialStateType = {
+type TInitialState = {
     id: number | null,
     email: string | null,
     login: string | null,
     isAuth: boolean
 }
-type SetUserActionType = {
-    type: typeof actionTypes.setUser,
+type TSetUserAction = {
+    type: 'auth/SET_USER',
     data: {
         id: number,
         email: string,
         login: string
     }
 }
-type UnsetUserActionType = {
-    type: typeof actionTypes.unsetUser
+type TUnsetUserAction = {
+    type: 'auth/UNSET_USER'
 }
+type TActions = TSetUserAction | TUnsetUserAction
 
-const actionTypes = {
-    setUser: 'auth/SET_USER',
-    unsetUser: 'auth/UNSET_USER',
-}
-
-const initialState: InitialStateType = {
+const initialState: TInitialState = {
     id: null,
     email: null,
     login: null,
     isAuth: false,
 }
 
-export const authReducer = (state: InitialStateType = initialState, action: any): InitialStateType => {
+export const authReducer = (state: TInitialState = initialState, action: TActions): TInitialState => {
     switch (action.type) {
-        case actionTypes.setUser:
+        case 'auth/SET_USER':
             return {
                 ...state,
                 ...action.data,
                 isAuth: true,
             }
 
-        case actionTypes.unsetUser:
+        case 'auth/UNSET_USER':
             return {
                 ...state,
                 id: null,
@@ -53,21 +49,21 @@ export const authReducer = (state: InitialStateType = initialState, action: any)
     }
 }
 
-export const setUser = (id: number, email: string, login: string): SetUserActionType => ({
-    type: actionTypes.setUser,
+export const setUser = (id: number, email: string, login: string): TSetUserAction => ({
+    type: 'auth/SET_USER',
     data: {
         id, email, login
     }
 })
 
-export const unsetUser = (): UnsetUserActionType => ({
-    type: actionTypes.unsetUser
+export const unsetUser = (): TUnsetUserAction => ({
+    type: 'auth/UNSET_USER'
 })
 
 export const auth = () => async (dispatch: any) => {
     const response = await authApi.setUser()
 
-    if (response.resultCode === 0) {
+    if (response.resultCode === ResultCodes.Success) {
         const {id, email, login} = response.data
         dispatch(setUser(id, email, login))
     }
@@ -76,7 +72,7 @@ export const auth = () => async (dispatch: any) => {
 export const login = (login: string, password: string, rememberMe: boolean) => async (dispatch: any) => {
     const response = await authApi.login(login, password, rememberMe)
 
-    if (response.resultCode === 0) {
+    if (response.resultCode === ResultCodes.Success) {
         dispatch(auth())
     }
 }
@@ -84,7 +80,7 @@ export const login = (login: string, password: string, rememberMe: boolean) => a
 export const logout = () => async (dispatch: any) => {
     const response = await authApi.logout()
 
-    if (response.resultCode === 0) {
+    if (response.resultCode === ResultCodes.Success) {
         dispatch(unsetUser())
     }
 }

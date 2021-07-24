@@ -26,4 +26,4 @@ const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMid
 export default store
 
 type RootReducer = typeof rootReducer
-export type State = ReturnType<RootReducer>
+export type TState = ReturnType<RootReducer>
