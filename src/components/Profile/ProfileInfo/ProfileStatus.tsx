@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
 
 type Props = {
-    status: string,
+    status: string
+    isOwner: boolean
     updateStatus(status: string): void
 }
 
@@ -15,11 +16,13 @@ const ProfileStatus: React.FC<Props> = (props) => {
     }, [props.status])
 
     const toggleEditMode = (): void => {
-        if (editMode) {
-            setEditMode(false)
-            props.updateStatus(status)
-        } else {
-            setEditMode(true)
+        if (props.isOwner) {
+            if (editMode) {
+                setEditMode(false)
+                props.updateStatus(status)
+            } else {
+                setEditMode(true)
+            }
         }
     }
 
@@ -29,7 +32,7 @@ const ProfileStatus: React.FC<Props> = (props) => {
 
     return (
         <div>
-            { (editMode) ?
+            {(editMode) ?
                 <input
                     type="text"
                     autoFocus={true}
@@ -38,7 +41,7 @@ const ProfileStatus: React.FC<Props> = (props) => {
                     onChange={onStatusChange}
                 />
                 :
-                <p onDoubleClick={toggleEditMode}>{status}</p> }
+                <p onDoubleClick={toggleEditMode}>{status}</p>}
         </div>
     )
 }

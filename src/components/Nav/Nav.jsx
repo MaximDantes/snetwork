@@ -1,30 +1,33 @@
-import { NavLink, Router } from 'react-router-dom';
-import navClasses from './Nav.module.css';
+import {NavLink} from 'react-router-dom'
+import s from './Nav.module.css'
 
 const Nav = () => {
     return (
         <nav>
             <ul>
                 <li>
-                    <NavLink to='/profile' activeClassName={navClasses.active}>Profile</NavLink>
+                    <NavLink to='/profile' activeClassName={s.active}>Profile</NavLink>
                 </li>
                 <li>
-                    <NavLink to='/dialogs' activeClassName={navClasses.active}>Dialogs</NavLink>
+                    <NavLink to='/users' activeClassName={s.active}>Users</NavLink>
                 </li>
                 <li>
-                    <NavLink to='/users' activeClassName={navClasses.active}>Users</NavLink>
+                    <NavLink to='/chat' activeClassName={s.active}>Chat</NavLink>
                 </li>
                 <li>
-                    <NavLink to='/news' activeClassName={navClasses.active}>News</NavLink>
+                    <NavLink to='/dialogs' activeClassName={s.active}>Dialogs</NavLink>
                 </li>
                 <li>
-                    <NavLink to='/friends' activeClassName={navClasses.active}>Friends</NavLink>
+                    <NavLink to='/news' activeClassName={s.active}>News</NavLink>
                 </li>
                 <li>
-                    <NavLink to='/music' activeClassName={navClasses.active}>Music</NavLink>
+                    <NavLink to='/friends' activeClassName={s.active}>Friends</NavLink>
                 </li>
                 <li>
-                    <NavLink to='/settings' activeClassName={navClasses.active}>Settings</NavLink>
+                    <NavLink to='/music' activeClassName={s.active}>Music</NavLink>
+                </li>
+                <li>
+                    <NavLink to='/settings' activeClassName={s.active}>Settings</NavLink>
                 </li>
             </ul>
         </nav>

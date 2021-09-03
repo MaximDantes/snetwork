@@ -1,20 +1,25 @@
 import ProfileInfo from './ProfileInfo/ProfileInfo';
-import { TProfileInfo } from '../../types/types'
+import {TProfileInfo, TProfileInfoWithoutPhotos} from '../../types/types'
 import PostsContainer from './Posts/PostsContainer';
+import React from 'react'
 
-type ProfileProps = {
+type TProps = {
+    id: number
+    isOwner: boolean
     profileInfo: TProfileInfo
     status: string
     updateStatus(status: string): void
     logout(): void
-
+    setAvatar(file: File): void
+    setAdditionalProfileInfo(profileInfo: TProfileInfoWithoutPhotos): void
 }
 
-const Profile = (props: ProfileProps) => {
-debugger
+const Profile: React.FC<TProps> = (props) => {
     return (
         <div>
-            <ProfileInfo {...props.profileInfo}  status={props.status} updateStatus={props.updateStatus} logout={props.logout}/>
+            <ProfileInfo id={props.id} profileInfo={props.profileInfo} isOwner={props.isOwner} status={props.status}
+                         updateStatus={props.updateStatus} logout={props.logout} setAvatar={props.setAvatar}
+                         setAdditionalProfileInfo={props.setAdditionalProfileInfo}/>
             <PostsContainer />
         </div>
     );

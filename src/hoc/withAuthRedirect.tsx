@@ -1,21 +1,17 @@
 import {Redirect} from "react-router"
-import {connect} from "react-redux"
+import {useSelector} from 'react-redux'
 import {TState} from '../redux/store'
 import React from 'react'
 
 const withAuthRedirect = (Component: any) => {
 
-    const WrapperForRedirect: React.FC< {isAuth: boolean} > = (props) => {
-        if (!props.isAuth) return <Redirect to='/login' />
+    const WrapperForRedirect: React.FC = (props) => {
+        const isAuth = useSelector((state: TState) => state.auth.isAuth)
 
-        return <Component {...props}/>
+        return isAuth ? <Component {...props}/> : <Redirect to='/login' />
     }
 
-    const mapStateToProps = (state: TState) => ({
-        isAuth: state.auth.isAuth,
-    })
-
-    return connect(mapStateToProps)(WrapperForRedirect)
+    return WrapperForRedirect
 }
 
 export default withAuthRedirect

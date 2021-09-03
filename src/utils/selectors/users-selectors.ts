@@ -13,8 +13,8 @@ export const getTotalUsersCount = (state: TState) => state.users.totalUsersCount
 
 export const getCurrentPage = (state: TState) => state.users.currentPage
 
-export const getFindText = (state: TState) => state.users.findText
-
 export const getIsFetching = (state: TState) => state.users.isFetching
 
 export const getFollowingInProgress = (state: TState) => state.users.followingInProgress
+
+export const getFilter = (state: TState) => state.users.filter

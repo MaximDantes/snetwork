@@ -1,6 +1,6 @@
-import {profileApi} from '../api/api'
-import { TProfileInfo } from '../types/types'
-import {ThunkAction, ThunkDispatch} from 'redux-thunk'
+import {profileApi, ResultCodes} from '../api/api'
+import {TProfileInfo, TProfileInfoWithoutPhotos} from '../types/types'
+import {ThunkAction} from 'redux-thunk'
 import {TState} from './store'
 
 type TPost = {
@@ -34,7 +34,17 @@ type TDeletePostAction = {
     type: typeof actionTypes.deletePost,
     postId: number
 }
-type TActions = TAddPostAction | TSetProfileAction | TSetStatusAction | TToggleFetchingAction | TDeletePostAction
+type TSetAvatarSuccessAction = {
+    type: typeof actionTypes.setAvatarSuccess
+    small: string
+    large: string
+}
+type TSetAdditionalProfileInfoSuccessAction = {
+    type: typeof actionTypes.setAdditionalProfileInfoSuccess
+    profileInfo: TProfileInfoWithoutPhotos
+}
+type TActions = TAddPostAction | TSetProfileAction | TSetStatusAction
+    | TToggleFetchingAction | TDeletePostAction | TSetAvatarSuccessAction | TSetAdditionalProfileInfoSuccessAction
 
 type TThunkResult<T> = ThunkAction<T, TState, undefined, TActions>
 
@@ -44,7 +54,9 @@ const actionTypes = {
     setProfile: 'profile/SET_PROFILE',
     setStatus: 'profile/SET_STATUS',
     toggleFetching: 'profile/TOGGLE_FETCHING',
-    deletePost: 'profile/tDELETE_POST'
+    deletePost: 'profile/DELETE_POST',
+    setAvatarSuccess: 'profile/SET_AVATAR_SUCCESS',
+    setAdditionalProfileInfoSuccess: 'profile/SET_ADDITIONAL_PROFILE_INFO_SUCCESS',
 }
 
 const initialState: TInitialState = {
@@ -107,6 +119,27 @@ export const profileReducer = (state = initialState, action: any) => {
                 postsData: state.postsData.filter(x => x.id != action.postId)
             }
 
+        case actionTypes.setAvatarSuccess:
+            return {
+                ...state,
+                profileInfoData: {
+                    ...state.profileInfoData,
+                    photos: {
+                        small: action.small,
+                        large: action.large
+                    }
+                }
+            }
+
+        case actionTypes.setAdditionalProfileInfoSuccess:
+            return {
+                ...state,
+                profileInfoData: {
+                    ...action.profileInfo,
+                    photos: state.profileInfoData?.photos
+                }
+            }
+
         default:
             return state
     }
@@ -138,6 +171,17 @@ export const deletePost = (postId: number): TDeletePostAction => ({
     postId
 })
 
+const setAvatarSuccess = (small: string, large: string): TSetAvatarSuccessAction => ({
+    type: actionTypes.setAvatarSuccess,
+    small,
+    large
+})
+
+const setAdditionalProfileInfoSuccess = (profileInfo: TProfileInfoWithoutPhotos): TSetAdditionalProfileInfoSuccessAction => ({
+    type: actionTypes.setAdditionalProfileInfoSuccess,
+    profileInfo
+})
+
 
 export const getProfile = (id: number): TThunkResult<void> => async (dispatch) => {
     dispatch(toggleFetching(true))
@@ -156,4 +200,18 @@ export const getStatus = (id: number): TThunkResult<void> => async (dispatch) =>
 export const updateStatus = (status: string): TThunkResult<void> => async (dispatch) => {
     await profileApi.updateStatus(status)
     dispatch(setStatus(status))
+}
+
+export const setAvatar = (file: File): TThunkResult<void> => async (dispatch) => {
+    const response = await profileApi.setAvatar(file)
+    if (response.resultCode === ResultCodes.Success) {
+        dispatch(setAvatarSuccess(response.data.photos.small, response.data.photos.large))
+    }
+}
+
+export const setAdditionalProfileInfo = (profileInfo: TProfileInfoWithoutPhotos): TThunkResult<void> => async (dispatch) => {
+    const response = await profileApi.setAdditionalProfileInfo(profileInfo)
+    if (response.resultCode === ResultCodes.Success) {
+        dispatch(setAdditionalProfileInfoSuccess(profileInfo))
+    }
 }

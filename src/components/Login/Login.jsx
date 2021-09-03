@@ -7,13 +7,13 @@ import Button from "../common/Button/Button";
 import {Input} from "../common/FormControls/FormControls";
 import {required} from "../../utils/validators/validators";
 
-let LoginForm = ({handleSubmit}) => {
+let LoginForm = ({handleSubmit, captchaUrl}) => {
     return (
         <form onSubmit={handleSubmit}>
             <div>
                 <Field
                     type='text'
-                    placeholder='login'
+                    placeholder='Login'
                     name='login'
                     component={Input}
                     validate={[required]}
@@ -22,7 +22,7 @@ let LoginForm = ({handleSubmit}) => {
             <div>
                 <Field
                     type='text'
-                    placeholder='password'
+                    placeholder='Password'
                     name='password'
                     component={Input}
                     validate={[required]}
@@ -36,6 +36,18 @@ let LoginForm = ({handleSubmit}) => {
                 />
                 remember me
             </div>
+            {captchaUrl &&
+                <div>
+                    <img src={captchaUrl}/>
+                    <Field
+                        type='text'
+                        placeholder='Captcha'
+                        name='captcha'
+                        component={Input}
+                        validate={[required]}
+                    />
+                </div>
+            }
             <div>
                 <Button text='Login'></Button>
             </div>
@@ -51,18 +63,19 @@ LoginForm = reduxForm({
 
 let Login = (props) => {
     const onSubmitHandler = (formData) => {
-        props.login(formData.login, formData.password, formData.rememberMe);
+        props.login(formData.login, formData.password, formData.rememberMe, formData.captcha);
     }
 
     if (props.isAuth){
         return <Redirect to={'/profile'} />
     }
 
-    return <LoginForm onSubmit={onSubmitHandler} />;
+    return <LoginForm onSubmit={onSubmitHandler} captchaUrl={props.captchaUrl}/>;
 }
 
 const mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth,
+    captchaUrl: state.auth.captchaUrl
 })
 
 Login = connect(mapStateToProps, {login})(Login);

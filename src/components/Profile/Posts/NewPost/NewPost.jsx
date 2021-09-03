@@ -1,6 +1,6 @@
 import React from 'react';
 import s from './NewPost.module.css';
-import Button from './../../../common/Button/Button'
+import Button from '../../../common/Button/Button'
 import {Field, reduxForm} from "redux-form";
 import {maxLength, required} from "../../../../utils/validators/validators";
 import {FormControls} from "../../../common/FormControls/FormControls";

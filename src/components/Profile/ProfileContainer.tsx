@@ -1,65 +1,58 @@
 import React, {useEffect} from 'react'
-import {TState} from '../../redux/store'
-import {connect} from 'react-redux'
-import {withRouter} from 'react-router-dom'
-import {getProfile, getStatus, updateStatus} from '../../redux/profileReducer'
+import {useDispatch, useSelector} from 'react-redux'
+import {useParams} from 'react-router-dom'
+import {getProfile, getStatus, setAdditionalProfileInfo, setAvatar, updateStatus} from '../../redux/profileReducer'
 import Preloader from '../common/Preloader/Preloader'
 import Profile from './Profile'
-import withAuthRedirect from '../../hoc/withAuthRedirect'
-import {compose} from 'redux'
 import {logout} from '../../redux/authReducer'
-import {TProfileInfo} from '../../types/types'
+import {TProfileInfoWithoutPhotos} from '../../types/types'
+import {getProfileInfo, getProfileIsFetching, getProfileStatus} from '../../utils/selectors/profile-selectors'
+import {getAuthId} from '../../utils/selectors/auth-selectors'
+import useRedirect from '../../hooks/useRedirect'
 
-type Props = {
-    profileInfo: TProfileInfo
-    id: number
-    status: string
-    isFetching: boolean
-    getStatus(userId: number): void
-    getProfile(userId: number): void
-    updateStatus(status: string): void
-    logout(): void
-    match: any
-}
+const ProfileContainer: React.FC = () => {
+    const dispatch = useDispatch()
 
-const ProfileContainer: React.FC<Props> = (props) => {
+    const profileInfo = useSelector(getProfileInfo)
+    const status = useSelector(getProfileStatus)
+    const isFetching = useSelector(getProfileIsFetching)
+    const authId = useSelector(getAuthId)
+
+    const updateStatusProps = (status: string) => dispatch(updateStatus(status))
+    const logoutProps = () => dispatch(logout())
+    const setAvatarProps = (file: File) => dispatch(setAvatar(file))
+    const setAdditionalProfileInfoProps = (profileInfo: TProfileInfoWithoutPhotos) => dispatch(setAdditionalProfileInfo(profileInfo))
+
+    let id = Number(useParams< {id? : string | undefined} >().id)
+
     useEffect(() => {
-        let id = props.match.params.id
-        if (!id) {
-            id = props.id
-        }
-        props.getStatus(id)
-        props.getProfile(id)
-    }, [props.match.params.id, props.id])
+        if (!id && authId) id = authId
+        dispatch(getStatus(id))
+        dispatch(getProfile(id))
+    }, [id, authId])
 
+    useRedirect('/login')
 
     return (
         <>
             {
-                props.isFetching
+                isFetching
                     ?
                     <Preloader/>
                     :
                     <Profile
-                        profileInfo={props.profileInfo}
-                        status={props.status}
-                        updateStatus={props.updateStatus}
-                        logout={props.logout}
+                        id={id}
+                        profileInfo={profileInfo}
+                        status={status}
+                        updateStatus={updateStatusProps}
+                        logout={logoutProps}
+                        setAvatar={setAvatarProps}
+                        setAdditionalProfileInfo={setAdditionalProfileInfoProps}
+                        isOwner={!id}
                     />
             }
         </>
     )
 }
 
-const mapStateToProps = (state: TState) => ({
-    profileInfo: state.profile.profileInfoData,
-    status: state.profile.status,
-    isFetching: state.profile.isFetching,
-    id: state.auth.id,
-})
-
-export default compose(
-    connect(mapStateToProps, {getProfile, getStatus, updateStatus, logout}),
-    withRouter,
-    withAuthRedirect
-)(ProfileContainer)
+export default ProfileContainer
