@@ -37,6 +37,7 @@ const Users: React.FC<TProps> = (props) => {
 
             {props.usersData.map(item =>
                 <User
+                    key={item.id}
                     id={item.id}
                     name={item.name}
                     status={item.status}

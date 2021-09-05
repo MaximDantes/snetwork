@@ -17,14 +17,14 @@ const ChatPage: React.FC<TProps> = (props) => {
         props.webSocket.addEventListener('open', () => {
             setReadyStatus('ready')
         })
-    }, [])
+    }, [props.webSocket])
 
     useEffect(() => {
         props.webSocket.addEventListener('message', (e) => {
             const newMessages = JSON.parse(e.data)
             setMessages((prevMessages) => [...prevMessages, ...newMessages])
         })
-    }, [])
+    }, [props.webSocket])
 
     const sendMessage = (message: string) => {
         props.webSocket.send(message)

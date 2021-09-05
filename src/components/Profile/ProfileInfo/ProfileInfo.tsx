@@ -25,29 +25,31 @@ const ProfileInfo = (props: ProfileInfoProps) => {
     const toggleEditMode = () => {
         setEditMode(x => !x)
     }
-    
+
     return (
         <div>
             <div className={s.topImg}>
-                <img src={topImg} alt="top image"/>
+                <img src={topImg} alt="topImage"/>
             </div>
 
             <div className={s.profile}>
-                <Avatar photo={props.profileInfo.photos.large} setAvatar={props.setAvatar}/>
+                <Avatar photo={props.profileInfo.photos.large} setAvatar={props.setAvatar} isOwner={props.isOwner}/>
                 <div>
                     <p className={s.title}>{props.profileInfo.fullName}</p>
                     <ProfileStatus isOwner={props.isOwner} status={props.status} updateStatus={props.updateStatus}/>
-                    { editMode ?
-                        <ProfileDataForm id={props.id} profileInfo={props.profileInfo} save={toggleEditMode}
-                                         setAdditionalProfileInfo={props.setAdditionalProfileInfo}/>
-                        :
-                        <ProfileData profileInfo={props.profileInfo} isOwner={props.isOwner} edit={toggleEditMode}/> }
+                    {
+                        editMode ?
+                            <ProfileDataForm id={props.id} profileInfo={props.profileInfo} save={toggleEditMode}
+                                             setAdditionalProfileInfo={props.setAdditionalProfileInfo}/>
+                            :
+                            <ProfileData profileInfo={props.profileInfo} isOwner={props.isOwner} edit={toggleEditMode}/>
+                    }
 
                 </div>
             </div>
 
             <div>
-                {props.isOwner &&  <Button text={'Logout'} onClick={props.logout}/>}
+                {props.isOwner && <Button text={'Logout'} onClick={props.logout}/>}
             </div>
         </div>
     )

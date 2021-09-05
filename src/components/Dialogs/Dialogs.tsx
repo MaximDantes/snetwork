@@ -1,11 +1,17 @@
 import dialogsClasses from './Dialogs.module.css';
 import MessagesContainer from './Messages/MessagesContainer';
 import Senders from './Senders/Senders';
+import {useSelector} from 'react-redux'
+import {getSendersData} from '../../utils/selectors/dialogs-selectors'
+import React from 'react'
 
-const Dialogs = (props) => {
+const Dialogs: React.FC = () => {
+
+    const sendersData = useSelector(getSendersData)
+
     return (
         <div className={dialogsClasses.dialogs}>
-            <Senders sendersData={props.state.sendersData} />
+            <Senders sendersData={sendersData} />
             <MessagesContainer />
         </div>
     );

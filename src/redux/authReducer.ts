@@ -75,7 +75,7 @@ export const auth= (): TThunkResult<void> => async (dispatch) => {
     }
 }
 
-export const login = (login: string, password: string, rememberMe: boolean, captcha?: string): TThunkResult<void> => async (dispatch) => {
+export const signIn = (login: string, password: string, rememberMe: boolean, captcha?: string): TThunkResult<void> => async (dispatch) => {
     const response = await authApi.login(login, password, rememberMe, captcha)
 
     if (response.resultCode === ResultCodes.Success) {

@@ -1,28 +1,22 @@
-type User = {
+export type TUser = {
     id: number,
     name: string,
     avatar: string
 }
-type Message = {
+type TMessage = {
     id: number,
     senderId: number,
     receiverId: number,
     text: string
 }
-type InitialStateType = {
-    sendersData: User[],
-    messagesData: Message[]
-}
-type SendMessageActionType = {
-    type: typeof actionTypes.sendMessage,
-    message: string
+type TInitialState = {
+    sendersData: TUser[],
+    messagesData: TMessage[]
 }
 
-const actionTypes = {
-    sendMessage: 'SEND_MESSAGE',
-};
+type TActions = ReturnType<typeof sendMessage>
 
-const initialState: InitialStateType = {
+const initialState: TInitialState = {
     sendersData: [
         { id: 1, name: 'Saber', avatar: 'https://sun9-38.userapi.com/impg/3qV6CsDQFrvAyuxIjVaS0byAvupKqPeoedq9rA/vh5FmTbwXqI.jpg?size=1077x1080&quality=96&sign=2d6c44aac83eff97da8a839437f223e5&type=album' },
         { id: 2, name: 'Reechka', avatar: 'https://sun9-60.userapi.com/impg/S26Ob2ZUtOe969MNMNA-YfTkvBEPX4rCLM2ppQ/9h9QPrUTWOc.jpg?size=1080x1035&quality=96&sign=0315f01c9fda4ba66c5ffdc1df62200a&type=album' },
@@ -64,16 +58,16 @@ const initialState: InitialStateType = {
     ],
 };
 
-export const dialogsReducer = (state: InitialStateType = initialState, action: any) => {
+export const dialogsReducer = (state: TInitialState = initialState, action: TActions): TInitialState => {
 
     switch (action.type) {
-        case actionTypes.sendMessage:
+        case 'dialogs/SEND_MESSAGE':
             return {
                 ...state,
                 messagesData: [...state.messagesData, {
                     id: 2,
-                    sender: 1,
-                    receiver: 0,
+                    senderId: 1,
+                    receiverId: 0,
                     text: action.message
                 }],
             };
@@ -83,7 +77,7 @@ export const dialogsReducer = (state: InitialStateType = initialState, action: a
     }
 };
 
-export const sendMessage = (message: string): SendMessageActionType => ({
-    type: actionTypes.sendMessage,
+export const sendMessage = (message: string) => ({
+    type: 'dialogs/SEND_MESSAGE',
     message
-});
+} as const)

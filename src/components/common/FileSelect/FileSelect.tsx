@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 
 type TProps = {
-    //text: string
     onChange: React.ChangeEventHandler<HTMLInputElement>
 }
 
@@ -20,7 +19,7 @@ const FileSelect: React.FC<TProps> = (props) => {
         <StyledInput
             onChange={props.onChange}
             type={'file'}
-        ></StyledInput>
+        />
     )
 }
 

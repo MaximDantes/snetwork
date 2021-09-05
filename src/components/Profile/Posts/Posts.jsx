@@ -10,6 +10,7 @@ const Posts = (props) => {
 
     let posts = props.posts.map(item => (
         <Post
+            key={item.id}
             avatar={item.avatar}
             text={item.text}
         />

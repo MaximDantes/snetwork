@@ -1,12 +1,7 @@
 import './App.css'
 import Nav from './components/Nav/Nav'
 import ProfileContainer from './components/Profile/ProfileContainer'
-import News from './components/News/News'
-import Music from './components/Music/Music'
-import Settings from './components/Settings/Settings'
-import Friends from './components/Friends/Friends'
 import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
-import HeaderContainer from './components/Header/HeaderContainer'
 import Login from './components/Login/Login'
 import React, {Component} from 'react'
 import {connect, Provider} from 'react-redux'
@@ -17,9 +12,9 @@ import {initializeApp} from './redux/appReducer'
 import store from './redux/store'
 import UsersPage from './components/Users/UsersPage'
 import withSuspense from './hoc/withSuspense'
-
 import Dialogs from './components/Dialogs/Dialogs'
 import ChatPage from './components/Chat/ChatPage'
+import Header from './components/Header/Header'
 
 //const Dialogs = React.lazy(() => import('./components/Dialogs/Dialogs'))
 
@@ -37,24 +32,20 @@ class App extends Component {
 
         return (
             <div className="wrapper">
-                <HeaderContainer/>
+                <Header/>
                 <Nav/>
                 <main>
                     <Switch>
                         <Route path={'/'} exact render={() => <Redirect to={'/profile'}/>}/>
                         <Route path={'/profile/:id?'} render={() => <ProfileContainer/>}/>
+                        <Route path="/users" render={() => <UsersPage/>}/>
+                        <Route path="/chat" render={() => <ChatPage webSocket={webSocket}/>}/>
                         <Route path="/dialogs" render={withSuspense(() =>
                             <Dialogs
                                 state={this.props.state.dialogs}
                                 dispatch={this.props.dispatch}
                             />
                         )}/>
-                        <Route path="/users" render={() => <UsersPage/>}/>
-                        <Route path="/chat" render={() => <ChatPage webSocket={webSocket}/>}/>
-                        <Route path="/news" render={() => <News/>}/>
-                        <Route path="/friends" render={() => <Friends state={this.props.state.friends}/>}/>
-                        <Route path="/music" render={() => <Music/>}/>
-                        <Route path="/settings" render={() => <Settings/>}/>
                         <Route path="/login" render={() => <Login/>}/>
                     </Switch>
                 </main>

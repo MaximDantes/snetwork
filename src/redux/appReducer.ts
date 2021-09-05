@@ -3,7 +3,7 @@ import {auth} from "./authReducer";
 type TAction = ReturnType<typeof setInitialized>
 
 const initialState = {
-    initialized: false,
+    initialized: false
 }
 
 export const appReducer = (state = initialState, action: TAction): typeof initialState => {

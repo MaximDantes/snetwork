@@ -4,6 +4,7 @@ import defaultAvatar from './../../../assets/images/defaultAvatar.jpg'
 
 type TProps = {
     photo: string | null
+    isOwner: boolean
     setAvatar(file: File): void
 }
 
@@ -70,10 +71,14 @@ const Avatar: React.FC<TProps> = (props) => {
             onDrop={dropHandler}
         >
             <img src={props.photo || defaultAvatar} alt={'avatar'}/>
-            {drag ?
-                <p className={'leaveP'}>Leave your file here</p>
-                :
-                <p className={'dragP'}>Drag your file here</p>
+            {
+                (() => {
+                    if (props.isOwner)
+                        return drag ?
+                            <p className={'leaveP'}>Leave your file here</p>
+                            :
+                            <p className={'dragP'}>Drag your file here</p>
+                })()
             }
         </StyledDiv>
     )
