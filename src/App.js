@@ -11,12 +11,9 @@ import Preloader from './components/common/Preloader/Preloader'
 import {initializeApp} from './store/appReducer'
 import store from './store/store'
 import UsersPage from './components/Users/UsersPage'
-import withSuspense from './hoc/withSuspense'
-import Dialogs from './components/Dialogs/Dialogs'
 import ChatPage from './components/Chat/ChatPage'
 import Header from './components/Header/Header'
 
-//const Dialogs = React.lazy(() => import('./components/Dialogs/Dialogs'))
 
 class App extends Component {
     componentDidMount = () => {
