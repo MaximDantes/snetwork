@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect'
-import {TState} from '../../redux/store'
+import {TState} from '../../store/store'
 
 const getUsersDataSelector = (state: TState) => state.users.usersData
 

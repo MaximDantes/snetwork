@@ -1,14 +1,20 @@
 import React, {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {useParams} from 'react-router-dom'
-import {getProfile, getStatus, setAdditionalProfileInfo, setAvatar, updateStatus} from '../../redux/profileReducer'
 import Preloader from '../common/Preloader/Preloader'
 import Profile from './Profile'
-import {logout} from '../../redux/authReducer'
+import {logout} from '../../store/authReducer'
 import {TProfileInfoWithoutPhotos} from '../../types/types'
 import {getProfileInfo, getProfileIsFetching, getProfileStatus} from '../../utils/selectors/profile-selectors'
 import {getAuthId} from '../../utils/selectors/auth-selectors'
 import useRedirect from '../../hooks/useRedirect'
+import {
+    getProfile,
+    getStatus,
+    setAdditionalProfileInfo,
+    setAvatar,
+    updateStatus
+} from '../../store/profile/profile-thunks'
 
 const ProfileContainer: React.FC = () => {
     const dispatch = useDispatch()
@@ -31,6 +37,9 @@ const ProfileContainer: React.FC = () => {
         dispatch(getProfile(id))
     }, [id, authId])
 
+    let isOwner = false
+    if (!id || id === authId) isOwner = true
+
     useRedirect('/login')
 
     return (
@@ -48,7 +57,7 @@ const ProfileContainer: React.FC = () => {
                         logout={logoutProps}
                         setAvatar={setAvatarProps}
                         setAdditionalProfileInfo={setAdditionalProfileInfoProps}
-                        isOwner={!id}
+                        isOwner={isOwner}
                     />
             }
         </>

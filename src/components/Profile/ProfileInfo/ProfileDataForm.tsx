@@ -8,7 +8,7 @@ import {required} from '../../../utils/validators/validators'
 
 type TProps = {
     id: number
-    profileInfo: TProfileInfo
+    profileInfo: TProfileInfo | null
     save(): void
     setAdditionalProfileInfo(profileInfo: TProfileInfoWithoutPhotos): void
 }
@@ -29,10 +29,10 @@ type TForm = {
 const ProfileDataForm: React.FC<TProps> = (props) => {
 
     const initialValues: TForm = {
-        fullName: props.profileInfo.fullName,
-        job: props.profileInfo.lookingForAJobDescription,
-        aboutMe: props.profileInfo.aboutMe,
-        ...props.profileInfo.contacts
+        fullName: props.profileInfo?.fullName,
+        job: props.profileInfo?.lookingForAJobDescription,
+        aboutMe: props.profileInfo?.aboutMe,
+        ...props.profileInfo?.contacts
 
     }
 

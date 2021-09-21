@@ -1,5 +1,5 @@
 import Sender from './Sender/Sender'
-import {TUser} from '../../../redux/dialogsReducer'
+import {TUser} from '../../../store/dialogsReducer'
 import React from 'react'
 
 type TProps = {

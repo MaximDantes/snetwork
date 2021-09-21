@@ -1,4 +1,4 @@
-import {TState} from '../../redux/store'
+import {TState} from '../../store/store'
 
 export const getProfileInfo = (state: TState) => state.profile.profileInfoData
 export const getProfileStatus = (state: TState) => state.profile.status

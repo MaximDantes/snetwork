@@ -3,12 +3,21 @@ import styled from 'styled-components'
 import React from 'react'
 
 const StyledDiv = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  
   span {
+    line-height: 40px;
     margin: 0 3px;
     cursor: pointer;
-    width: 100px;
   }
 
+  button {
+    margin: 3px;
+    width: 40px;
+  }
+  
   .current {
     font-weight: 700;
   }

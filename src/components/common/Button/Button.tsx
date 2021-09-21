@@ -1,5 +1,5 @@
 import React from 'react'
-import s from './Button.module.css';
+import styled from 'styled-components'
 
 type TProps = {
     onClick?(): void
@@ -8,18 +8,18 @@ type TProps = {
     disabled?: boolean
 }
 
-const Button: React.FC<TProps> = (props) => {
-    return (
-        <button
-            onClick={props.onClick}
-            className={s.button}
-            type={props.type}
-            disabled={props.disabled}
-        >
-            {props.text}
-        </button>
-    );
+const StyledButton = styled.button`
+  padding: 5px;
+  font-size: 20px;
+  background: #62dafc;
+  border-radius: 3px;
+  margin: 5px 0;
+`
 
+const Button: React.FC<TProps> = ({text, ...props}) => {
+    return (
+        <StyledButton {...props}>{text}</StyledButton>
+    )
 }
 
-export default Button;
+export default Button

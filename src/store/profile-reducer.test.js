@@ -1,4 +1,5 @@
-import {addPost, deletePost, profileReducer} from './profileReducer'
+import {profileReducer} from './profile/profile-reducer'
+import {addPost, deletePost} from './profile/profile-actions'
 
 const state = {
     postsData: [

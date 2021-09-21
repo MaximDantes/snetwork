@@ -1,4 +1,4 @@
-import {TState} from '../../redux/store'
+import {TState} from '../../store/store'
 
 export const getAuthId = (state: TState) => state.auth.id
 export const getIsAuth = (state: TState) => state.auth.isAuth

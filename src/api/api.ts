@@ -46,7 +46,8 @@ export const axiosInstance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.0/',
     withCredentials: true,
     headers: {
-        'API-KEY': 'a1d94230-84f9-401a-8547-9f4808e1cd45'
+        //'API-KEY': 'a1d94230-84f9-401a-8547-9f4808e1cd45'
+        'API-KEY': 'b08179f3-1361-49b0-ae81-3d52c5a0de9d'
     }
 })
 
@@ -97,7 +98,6 @@ export const profileApi = {
     },
 
     setAdditionalProfileInfo(profileInfo: TProfileInfoWithoutPhotos) {
-        debugger
         return axiosInstance.put<TPut>('profile', profileInfo)
             .then(response => response.data)
     }

@@ -1,6 +1,6 @@
 import {Redirect} from "react-router"
 import {useSelector} from 'react-redux'
-import {TState} from '../redux/store'
+import {TState} from '../store/store'
 import React from 'react'
 
 const withAuthRedirect = (Component: any) => {

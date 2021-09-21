@@ -1,5 +1,5 @@
 import {axiosInstance} from './api'
-import {TFilter} from '../redux/usersReducer'
+import {TFilter} from '../store/usersReducer'
 
 type TUser = {
     id: number
@@ -24,7 +24,7 @@ type TFollow = {
 export const usersApi = {
     getUsers: (pageSize = 10, currentPage = 1, filter: TFilter) => {
         const term = filter.term ? `&term=${filter.term}` : ''
-        const friend = !filter.friend ? '' : filter.friend ? `&friend=true` : `&friend=false`
+        const friend = filter.friend === null ? '' : filter.friend ? `&friend=true` : `&friend=false`
 
         const url = `users?count=${pageSize}&page=${currentPage}${term}${friend}`
 

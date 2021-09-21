@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from 'react-redux'
-import {signIn} from '../../redux/authReducer'
+import {signIn} from '../../store/authReducer'
 import {Redirect} from 'react-router'
 import LoginForm from './LoginForm'
 import React from 'react'

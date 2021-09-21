@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from 'react-redux'
 import React, {useEffect} from 'react'
-import {getUsers, TFilter, toggleFollowing, toggleFollowingProgress} from '../../redux/usersReducer'
+import {getUsers, TFilter, toggleFollowing, toggleFollowingProgress} from '../../store/usersReducer'
 import Users from './Users'
 import Preloader from '../common/Preloader/Preloader'
 import {
@@ -14,6 +14,7 @@ import {
 import useRedirect from '../../hooks/useRedirect'
 import {useHistory} from 'react-router-dom'
 import * as queryString from 'querystring'
+import UsersFind from './UsersFind'
 
 const UsersPage: React.FC = () => {
     const dispatch = useDispatch()
@@ -29,9 +30,13 @@ const UsersPage: React.FC = () => {
 
     const pagesCount = Math.ceil(totalUsersCount / pageSize)
 
+    const find = (filter: TFilter) => {
+        dispatch(getUsers(10, 1, filter))
+    }
+
     const changePageProps = (pageNumber: number) => {
         if (pageNumber >= 1 && pageNumber <= pagesCount) {
-            dispatch(getUsers(pageSize, pageNumber, {term: null, friend: null}))
+            dispatch(getUsers(pageSize, pageNumber, filter))
         }
     }
     const getUsersProps = (pageSize: number, pageNumber: number, filter: TFilter) => {
@@ -56,7 +61,7 @@ const UsersPage: React.FC = () => {
 
     useEffect(() => {
         const term = filter.term ? `?term=${filter.term}` : ''
-        let friend = !filter.friend ? '' : filter.friend ? `friend=true` : `friend=false`
+        let friend = filter.friend === null ? '' : filter.friend ? `friend=true` : `friend=false`
         let page = `page=${currentPage}`
         if (!term && friend) friend = `?${friend}`
         if (term && friend) friend = `&${friend}`
@@ -76,25 +81,28 @@ const UsersPage: React.FC = () => {
 
     useRedirect('/login')
 
-    return <> {
-        isFetching
-            ?
-            <Preloader/>
-            :
-            <Users
-                usersData={usersData}
-                totalUsersCount={totalUsersCount}
-                pageSize={pageSize}
-                pagesCount={pagesCount}
-                currentPage={currentPage}
-                filter={filter}
-                followingInProgress={followingInProgress}
-                toggleFollowing={toggleFollowingProps}
-                changePage={changePageProps}
-                getUsers={getUsersProps}
-                toggleFollowingProgress={toggleFollowingProgressProps}
-            />
-    }
+    return <>
+        <UsersFind find={find} filter={filter}/>
+
+        {
+            isFetching
+                ?
+                <Preloader/>
+                :
+                <Users isFetching={isFetching}
+                       usersData={usersData}
+                       totalUsersCount={totalUsersCount}
+                       pageSize={pageSize}
+                       pagesCount={pagesCount}
+                       currentPage={currentPage}
+                       filter={filter}
+                       followingInProgress={followingInProgress}
+                       toggleFollowing={toggleFollowingProps}
+                       changePage={changePageProps}
+                       getUsers={getUsersProps}
+                       toggleFollowingProgress={toggleFollowingProgressProps}
+                />
+        }
     </>
 }
 

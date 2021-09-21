@@ -6,7 +6,7 @@ import React from 'react'
 type TProps = {
     id: number
     isOwner: boolean
-    profileInfo: TProfileInfo
+    profileInfo: TProfileInfo | null
     status: string
     updateStatus(status: string): void
     logout(): void
@@ -20,9 +20,9 @@ const Profile: React.FC<TProps> = (props) => {
             <ProfileInfo id={props.id} profileInfo={props.profileInfo} isOwner={props.isOwner} status={props.status}
                          updateStatus={props.updateStatus} logout={props.logout} setAvatar={props.setAvatar}
                          setAdditionalProfileInfo={props.setAdditionalProfileInfo}/>
-            <PostsContainer />
+            {/*<PostsContainer />*/}
         </div>
-    );
+    )
 }
 
 export default Profile;

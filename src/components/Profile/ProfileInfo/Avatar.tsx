@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import defaultAvatar from './../../../assets/images/defaultAvatar.jpg'
 
 type TProps = {
-    photo: string | null
+    photo?: string | null
     isOwner: boolean
     setAvatar(file: File): void
 }

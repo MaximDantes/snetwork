@@ -1,46 +1,81 @@
-import React from 'react'
-import {Field, Form} from 'react-final-form'
+import React, {useEffect, useState} from 'react'
 import Button from '../common/Button/Button'
-import {TFilter} from '../../redux/usersReducer'
-
-type TForm = {
-    value: string
-    followed: string
-}
+import {TFilter} from '../../store/usersReducer'
+import {Formik} from 'formik'
+import FormikInput from '../common/Formik/FormikInput'
+import FormikSelect from '../common/Formik/FormikSelect'
+import styled from 'styled-components'
+import useDebounce from '../../hooks/useDebounce'
 
 type TProps = {
     find(filter: TFilter): void
     filter: TFilter
 }
 
+const StyledDiv = styled.div`
+    display: flex;
+
+    input, select {
+        margin: 5px;
+        font-size: 20px;
+    }
+
+    button {
+        margin: 5px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+`
+
 const UsersFind: React.FC<TProps> = (props) => {
 
-    const onSubmit = (form: TForm) => {
-        const friend = form.followed === 'all' ? null : (form.followed === 'followed')
+    const followed = props.filter.friend ? 'followed' : typeof props.filter.friend === 'boolean' ? 'unfollowed' : 'all'
 
-        props.find({term: form.value, friend})
+    const [term, setTerm] = useState(props.filter.term as string)
+    const [friend, setFriend] = useState(followed)
+
+    const debouncingSearchTerm = useDebounce(term, 750)
+    const [termChanged, setTermChanged] = useState(false)
+
+    useEffect(() => {
+        setTerm(props.filter.term || '')
+        setFriend(followed)
+    }, [props.filter])
+
+    useEffect(() => {
+        if (debouncingSearchTerm !== null && termChanged) {
+            onSubmit(debouncingSearchTerm, followed)
+            setTermChanged(false)
+        }
+    }, [debouncingSearchTerm])
+
+    const onTermChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTerm(e.currentTarget.value)
+        setTermChanged(true)
+    }
+
+    const onFollowedChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setFriend(e.currentTarget.value)
+        onSubmit(term, e.currentTarget.value)
+    }
+
+    const onSubmit = (term: string, followed: string) => {
+        const friend = followed === 'all' ? null : (followed === 'followed')
+        props.find({term, friend})
     }
 
     return (
-        <div>
-            <Form
-                onSubmit={onSubmit}
-                render={({handleSubmit}) => (
-                    <form onSubmit={handleSubmit}>
-                        <Field name={'value'} component={'input'}/>
+        <StyledDiv>
 
-                        <Field name={'followed'}
-                               component={'select'}>
-                            <option value={'all'}>All</option>
-                            <option value={'followed'}>Followed</option>
-                            <option value={'unfollowed'}>Unfollowed</option>
-                        </Field>
+            <FormikInput name={'value'} value={term || ''} onChange={onTermChange} placeholder={'Find...'}/>
 
-                        <Button type={'submit'} text={'Find'}/>
-                    </form>
-                )}
-            />
-        </div>
+            <FormikSelect name={'followed'} value={friend} onChange={onFollowedChange}>
+                <option value={'all'}>All</option>
+                <option value={'followed'}>Followed</option>
+                <option value={'unfollowed'}>Unfollowed</option>
+            </FormikSelect>
+
+        </StyledDiv>
     )
 }
 
